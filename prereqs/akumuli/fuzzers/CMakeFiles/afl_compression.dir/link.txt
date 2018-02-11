@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/afl_compression.dir/afl_compression.cpp.o CMakeFiles/afl_compression.dir/__/libakumuli/storage_engine/compression.cpp.o CMakeFiles/afl_compression.dir/__/libakumuli/util.cpp.o CMakeFiles/afl_compression.dir/__/libakumuli/log_iface.cpp.o  -o afl_compression -lpthread -lapr-1 

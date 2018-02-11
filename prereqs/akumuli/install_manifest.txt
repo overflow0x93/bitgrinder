@@ -1,0 +1,8 @@
+/usr/local/lib64/libakumuli.so.0.7.37
+/usr/local/lib64/libakumuli.so.0
+/usr/local/lib64/libakumuli.so
+/usr/local/include/akumuli_version.h
+/usr/local/include/akumuli_config.h
+/usr/local/include/akumuli.h
+/usr/local/include/akumuli_def.h
+/usr/local/bin/akumulid
