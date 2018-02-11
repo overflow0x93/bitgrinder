@@ -1,33 +1,18 @@
 #!/bin/bash
-# git clone https://github.com/akumuli.akumuli.git
-# git clone https://github.com/prometheus/prometheus.git
-# git clone https://github.com/jupp0r/prometheus-cpp.git
 
 ########## Arch Linux ##########
-# Akumuli Prereqs
-# sudo pacman -S jemalloc libmicrohttpd apr sqlite cmake
-# sudo apacman -S log4cxx
-# wget http://mirror.reverse.net/pub/apache/logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz
 
 ######### Debian ##########
-# sudo apt-get install libjemalloc-dev libmicrohttpd-dev libapr1-dev libaprutil1-dev libaprutil1-dbd-sqlite3 libsqlite3-dev liblog4cxx10 cmake
 
 cd prereqs/boost_1_54_0
 ./bootstrap.sh
 ./bjam architecture=x86 address-model=64 threading=multi --with-program_options --with-thread --with-filesystem --with-chrono --with-system --with-regex --with-test --with-date_time --with-coroutine --with-atomic --with-math --with-graph --with-exception -sBUILD=boost_unit_test_framework -j4
 sudo ./b2 install --prefix=/usr/local/ cxxflags="--std=c++11 -I/usr/include/python2.7/"
 
-cd ../akumuli
-rm CMakeCache.txt
-cmake .
-make -j4
-sudo make install
-
 sudo mkdir -p /opt/bitgrinder/data/config
-sudo mkdir -p /opt/bitgrinder/data/akumuli
 
 LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 export LD_LIBRARY_PATH
 
 # create bitgrinder user
-# chown log4cxx bin files, akumuli, and bitgrinder
+# chown bitgrinder
