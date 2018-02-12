@@ -23,10 +23,6 @@ bool isRunning(std::string name)
 
 int conInit()
 {
-    initscr();
-    //cbreak();
-    //keypad(stdscr, TRUE);
-
     int returnCode = 0;
     // Init status
     {
@@ -42,7 +38,6 @@ int conInit()
             returnCode += 1;
         }
     }
-    noecho();
     return returnCode;
 }
 
@@ -145,7 +140,5 @@ int main(int argc, char *argv[]) {
         std::cout << e.what() << "\n";
         return 1;
     }
-    //echo();
-    endwin();
     return 0;
 }

@@ -23,7 +23,7 @@ monitor.o: ./src/btgmonitor.cpp ./src/include/btgmonitor.h
 	$(CXX) -c -o ./bin/monitor.o ./src/btgmonitor.cpp $(LIBS)
 
 console: console.o
-	$(CXX) -o ./bin/console ./bin/console.o ./bin/system/systatus.o -lncurses -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
+	$(CXX) -o ./bin/console ./bin/console.o ./bin/system/systatus.o -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
 console.o: systatus.o ./src/console.cpp ./src/include/console.h ./src/include/system/systatus.h
 	$(CXX) -c -o ./bin/console.o ./src/console.cpp -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
