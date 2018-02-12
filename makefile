@@ -1,4 +1,5 @@
 CXX = g++ -std=c++11
+CC=g++
 #CXXFLAGS=
 LIBS = -lcurl -lstdc++ -lcrypto -l pthread
 all: clean bitgrinder monitor console
@@ -22,9 +23,9 @@ monitor.o: ./src/btgmonitor.cpp ./src/include/btgmonitor.h
 	$(CXX) -c -o ./bin/monitor.o ./src/btgmonitor.cpp $(LIBS)
 
 console: console.o
-	$(CXX) -o ./bin/console ./bin/console.o -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
+	$(CXX) -o ./bin/console ./bin/console.o ./bin/system/systatus.o -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
-console.o: ./src/console.cpp ./src/include/console.h
+console.o: systatus.o ./src/console.cpp ./src/include/console.h ./src/include/system/systatus.h
 	$(CXX) -c -o ./bin/console.o ./src/console.cpp -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
 sysdata.o: ./src/system/data.cpp ./src/include/system/data.h ./src/include/system/json.hpp
@@ -32,6 +33,9 @@ sysdata.o: ./src/system/data.cpp ./src/include/system/data.h ./src/include/syste
 
 tradedata.o: ./src/system/tradedata.cpp ./src/include/system/tradedata.h
 	$(CXX) -c -o ./bin/system/tradedata.o ./src/system/tradedata.cpp $(LIBS)
+
+systatus.o: ./src/system/systatus.c ./src/include/system/systatus.h
+	$(CC) -c ./src/system/systatus.c -o ./bin/system/systatus.o
 
 clean:
 	rm -f ./bin/bitgrinder ./bin/monitor ./bin/console ./bin/*.o ./bin/web/*.o ./bin/system/*.o ./bin/exchange/*.o

@@ -1,6 +1,7 @@
 //
 // Created by overflow on 2/11/18.
 //
+#include "./system/systatus.h"
 
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
