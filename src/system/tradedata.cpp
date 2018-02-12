@@ -9,10 +9,50 @@ Ticker::Ticker(std::string pair, std::string exchange) : cPair{ pair }, eName{ e
     struct tradeData tx;
     struct tradePeriod fullPeriod;
     struct currentPeriod partPeriod;
-    std::vector<tradePeriod> dWindow;
+    //std::vector<tradePeriod> dWindow;
+    //std::vector<tradeData> partPeriod.individualTX;
 }
 
 int Ticker::ReceiveTX()
 {
     return 0;
 }
+
+int Ticker::PushCurrent(int time, int txid, std::string type, float rate, float amount, float total)
+{
+        tradeData ctx;
+	ctx.txID = txid;
+        ctx.txTimestamp = time;
+    ctx.buySell = type;
+    ctx.rate = rate;
+    ctx.amount = amount;
+    ctx.total = total;
+//std::cout << gVenEth.tx.txID << " " << gVenEth.tx.txTim$
+    partPeriod.individualTX.push_back(ctx);
+
+	return 0;
+}
+
+void Ticker::initThread()
+{
+    updActive = true;
+    std::thread updThread(&Ticker::updateThread, *this, this);
+    updThread.detach();
+}
+
+void Ticker::endThread()
+{
+    updActive = false;
+}
+void Ticker::updateThread(Ticker *tickClass)
+{ 
+    // Check if current time > previous period + 5m
+// Move current period into period list
+	printf("[T] Thread Started\n");
+    while (updActive)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
+    printf("[T] Thread Ended\n");
+}
+

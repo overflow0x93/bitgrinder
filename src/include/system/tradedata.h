@@ -1,6 +1,9 @@
 //
 // Created by overflow on 2/11/18.
 //
+#include <cstdio>
+#include <thread>
+#include <chrono>
 #include <vector>
 #include <string>
 
@@ -40,23 +43,29 @@ public:
     } fullPeriod;
 
     struct currentPeriod {
-        int initTimestamp;
-        int initTXID;
-        float openRate;
-        int finalTimestamp;
-        int finalTXID;
-        float closeRate;
-        float periodMin;
-        float periodMax;
-        std::vector<tradeData> individualTX;
+        int initTimestamp{};
+        int initTXID{};
+        float openRate{};
+        int finalTimestamp{};
+        int finalTXID{};
+        float closeRate{};
+        float periodMin{};
+        float periodMax{};
+        std::vector<tradeData> individualTX{};
     } partPeriod;
 
 private:
     std::string cPair;
     std::string eName;
+bool updActive = false;
 public:
     std::vector<tradePeriod> PeriodTX;
     Ticker(std::string, std::string);
     virtual int ReceiveTX();
+    virtual int PushCurrent(int time, int txid, std::string type, float rate, float amount, float total);
+virtual void initThread();
+virtual void endThread();
+virtual void updateThread(Ticker *tickClass);
 };
+
 

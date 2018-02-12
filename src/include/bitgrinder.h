@@ -1,5 +1,6 @@
 #include "./exchange/gateio.h"
 #include "./system/data.h"
+#include "./system/tradedata.h"
 #include "./system/json.hpp"
 
 #include <stdlib.h>

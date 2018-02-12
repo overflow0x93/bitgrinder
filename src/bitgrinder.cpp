@@ -559,13 +559,33 @@ int console(GateIO cliExchange) {
 int main(int argc, char *argv[]) {
     GateIO gate("B5738462-1EB0-449E-AEEC-3F6C1D7DA0DA",
                 "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
+    Ticker gVenEth("ven_eth", "gateio");
 
-    std::string aux(argv[0]);
+    gVenEth.tx.txID = 10001000;
+    gVenEth.tx.txTimestamp = 111101000;
+    gVenEth.tx.buySell = "buy";
+    gVenEth.tx.rate = 0.00004123;
+    gVenEth.tx.amount = 230.45;
+    gVenEth.tx.total = 0.8;
+//std::cout << gVenEth.tx.txID << " " << gVenEth.tx.txTimestamp << " " << gVenEth.tx.buySell << "\r\n";
+//gVenEth.partPeriod.individualTX.push_back(gVenEth.tx);
+gVenEth.tx.txID = 22001000;
+    gVenEth.tx.txTimestamp = 222201000;
+    gVenEth.tx.buySell = "sell";
+    gVenEth.tx.rate = 0.00004923;
+    gVenEth.tx.amount = 30.1;
+    gVenEth.tx.total = 0.2;
+//gVenEth.partPeriod.individualTX.push_back(gVenEth.tx);
+if(gVenEth.PushCurrent(1234567890123, 124038532, "buy", 0.000323, 230.3, 0.8)==0)std::cout << gVenEth.partPeriod.individualTX[0].txID << " " << gVenEth.partPeriod.individualTX[0].txTimestamp << " " << gVenEth.partPeriod.individualTX[0].buySell << "\r\n";
+//std::cout << gVenEth.partPeriod.individualTX[1].txID << " " << gVenEth.partPeriod.individualTX[1].txTimestamp << " " << gVenEth.partPeriod.individualTX[1].buySell << "\r\n";
+
+
+	std::string aux(argv[0]);
     int pos = aux.rfind('/');
     path = aux.substr(0, pos + 1);
-    std::cout << "Path: " << path << "\r\n";
+    //std::cout << "Path: " << path << "\r\n";
     std::string name = aux.substr(pos + 1);
-
+/*
     if (init(path, gate) == 0) {
         std::cout << "Initialized. \r\n";
 
@@ -573,7 +593,7 @@ int main(int argc, char *argv[]) {
         std::cout << "Error initializing.";
         exit(EXIT_FAILURE);
     }
-
+*/
     // Temp redirect straight to console
     //console(gate);
     return 0;
