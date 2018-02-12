@@ -9,7 +9,8 @@ Bitgrinder is a cryptocurrency trading bot written in C++ designed to perform a 
 Bitgrinder
 -
 1. libcurl4-openssl-dev
-2. boost_1_54_0 (can upgrade to new version)
+2. boost_1_66_0
+ 
 # Exchanges
 
 Gate.io
