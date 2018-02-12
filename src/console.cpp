@@ -14,7 +14,7 @@ inline bool exists(const std::string &name) {
 bool isRunning(std::string name)
 {
     char command[32];
-    sprintf(command, "pgrep %s > /dev/null", name);
+    sprintf(command, "pgrep %s > /dev/null", name.c_str());
     //sprintf(command, "pgrep %s > /dev/null", "bitgrinder");
     return 0 == system(command);
     //if(system(command)>0){return true;}else{return false;}
