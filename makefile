@@ -3,8 +3,8 @@ CXX = g++ -std=c++11
 LIBS = -lcurl -lstdc++ -lcrypto -l pthread
 all: clean bitgrinder statmon
 
-bitgrinder: bitgrinder.o gateio.o
-	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o $(LIBS)
+bitgrinder: bitgrinder.o gateio.o tradedata.o
+	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o ./bin/system/tradedata.o $(LIBS)
 
 bitgrinder.o: sysdata.o ./src/bitgrinder.cpp ./src/include/bitgrinder.h ./src/include/system/json.hpp ./src/include/system/data.h
 	$(CXX) -c -o ./bin/bitgrinder.o ./src/bitgrinder.cpp $(LIBS)
@@ -24,5 +24,8 @@ statmon.o: ./src/statmon.cpp ./src/include/statmon.h
 sysdata.o: ./src/system/data.cpp ./src/include/system/data.h ./src/include/system/json.hpp
 	$(CXX) -c -o ./bin/system/sysdata.o ./src/system/data.cpp $(LIBS)
 
-clean: 
+tradedata.o: ./src/system/tradedata.cpp ./src/include/system/tradedata.h
+	$(CXX) -c -o ./bin/system/tradedata.o ./src/system/tradedata.cpp $(LIBS)
+
+clean:
 	rm -f ./bin/bitgrinder ./bin/statmon ./bin/*.o ./bin/web/*.o ./bin/system/*.o ./bin/exchange/*.o
