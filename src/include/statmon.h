@@ -1,9 +1,0 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <curl/curl.h>
-#include <chrono>
-#include <ctime>
-#include <iostream>
-#include <string>
-#include <thread>
-#include <fstream>

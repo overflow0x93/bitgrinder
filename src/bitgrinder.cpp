@@ -6,7 +6,6 @@
 #include <vector>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <string>
 #include <sstream>
 
 std::string bitgver = "0.0.1.26";

@@ -1,7 +1,7 @@
 CXX = g++ -std=c++11
 #CXXFLAGS=
 LIBS = -lcurl -lstdc++ -lcrypto -l pthread
-all: clean bitgrinder statmon
+all: clean bitgrinder monitor console
 
 bitgrinder: bitgrinder.o gateio.o tradedata.o
 	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o ./bin/system/tradedata.o $(LIBS)
@@ -15,11 +15,17 @@ gateio.o: exchange.o sysdata.o ./src/exchange/gateio.cpp ./src/include/exchange/
 exchange.o: ./src/exchange/exchange.cpp ./src/include/exchange/exchange.h
 	$(CXX) -c -o ./bin/exchange/exchange.o ./src/exchange/exchange.cpp $(LIBS)
 
-statmon: statmon.o
-	$(CXX) -o ./bin/statmon ./bin/statmon.o $(LIBS)
+monitor: monitor.o
+	$(CXX) -o ./bin/monitor ./bin/monitor.o $(LIBS)
 
-statmon.o: ./src/statmon.cpp ./src/include/statmon.h
-	$(CXX) -c -o ./bin/statmon.o ./src/statmon.cpp $(LIBS)
+monitor.o: ./src/btgmonitor.cpp ./src/include/btgmonitor.h
+	$(CXX) -c -o ./bin/monitor.o ./src/btgmonitor.cpp $(LIBS)
+
+console: console.o
+	$(CXX) -o ./bin/console ./bin/console.o -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
+
+console.o: ./src/console.cpp ./src/include/console.h
+	$(CXX) -c -o ./bin/console.o ./src/console.cpp -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
 sysdata.o: ./src/system/data.cpp ./src/include/system/data.h ./src/include/system/json.hpp
 	$(CXX) -c -o ./bin/system/sysdata.o ./src/system/data.cpp $(LIBS)
@@ -28,4 +34,7 @@ tradedata.o: ./src/system/tradedata.cpp ./src/include/system/tradedata.h
 	$(CXX) -c -o ./bin/system/tradedata.o ./src/system/tradedata.cpp $(LIBS)
 
 clean:
-	rm -f ./bin/bitgrinder ./bin/statmon ./bin/*.o ./bin/web/*.o ./bin/system/*.o ./bin/exchange/*.o
+	rm -f ./bin/bitgrinder ./bin/monitor ./bin/console ./bin/*.o ./bin/web/*.o ./bin/system/*.o ./bin/exchange/*.o
+
+install:
+	cp ./bin/bitgrinder ./bin/console ./bin/monitor /opt/bitgrinder
