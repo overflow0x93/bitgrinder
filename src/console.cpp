@@ -58,15 +58,47 @@ int main(int argc, char *argv[]) {
     int currentStatus=conInit();
     if(currentStatus!=0)
     {
+        std::string sysCmd = "";
+        sysCmd.append(path);
         if(currentStatus==11){
             std::cout << "Starting Bitgrinder...\r\n";
+            sysCmd.append("bitgrinder &");
+            //system(sysCmd.c_str());
+            if (isRunning("bitgrinder")) { statusmsg("Start Bitgrinder", "Pass", 2); }
+            else {
+                statusmsg("Start Bitgrinder", "FAIL", 3);
+            //    std::exit;
+            }
             std::cout << "Starting Monitor...\r\n";
+            sysCmd = "";
+            sysCmd.append(path);
+            sysCmd.append("monitor &");
+            //system(sysCmd.c_str());
+            if (isRunning("monitor")) { statusmsg("Start Bitgrinder Monitor", "Pass", 2); }
+            else {
+                statusmsg("Start Bitgrinder Monitor", "FAIL", 3);
+            //    std::exit;
+            }
         }
         else if(currentStatus==10){
             std::cout << "Starting Bitgrinder...\r\n";
+            sysCmd.append("bitgrinder &");
+            //system(sysCmd.c_str());
+            if (isRunning("bitgrinder")) { statusmsg("Start Bitgrinder", "Pass", 2); }
+            else {
+                statusmsg("Start Bitgrinder", "FAIL", 3);
+            //    std::exit;
+            }
         }
         else if(currentStatus==1){
             std::cout << "Starting Monitor...\r\n";
+            sysCmd.append("monitor &");
+            //system(sysCmd.c_str());
+            if (isRunning("monitor")) { statusmsg("Start Bitgrinder Monitor", "Pass", 2); }
+            else {
+                statusmsg("Start Bitgrinder Monitor", "FAIL", 3);
+            //    std::exit;
+            }
         }
         else {
             std::cout << "Unexpected running status. Terminating.\r\n";
