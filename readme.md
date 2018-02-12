@@ -7,14 +7,22 @@ Bitgrinder is a cryptocurrency trading bot written in C++ designed to perform a 
 # Prerequisites
 
 Bitgrinder
+-
 libcurl4-openssl-dev
 
 #TODO:
-1. Implement REDIS and benchmark performance
-2. Refactor current CBOR functionality to push to TSDB
-3. Generate time series for each currency and time series
-4. Perform analysis on each time series
-5. Display trade data in real-time via monitoring application refactoring monitor as needed
-6. Finish config file parsing and setup
-7. Benchmark standard operations and optimize
-8. Improve error handling for json fetching
+1. Move data model to a memory-based (only) model
+2. Implement periods, drop periods older than 30 days
+3. Perform basic analysis on periods
+4. Implement data export to save startup time
+
+#Exchanges
+
+Gate.io
+-
+Server time is GMT+8 : Shanghai, Beijing, Philippines, West Australia
+Unix timestamp requires no conversion.
+
+Trade Data Model
+-
+Works in 30 day increments made up of 5 minute periods (the smallest increment). Each 5 minute period is combined with other related periods for analysis for 10 minute, 15 minute, 30 minute and 60 minute windows for analysis.
