@@ -21,16 +21,60 @@ bool isRunning(std::string name)
     //return system(command);
 }
 
+int conInit()
+{
+    initscr();
+    //cbreak();
+    //keypad(stdscr, TRUE);
+
+    int returnCode = 0;
+    // Init status
+    {
+        statusmsg("Bitgrinder Console", "Pass", 2);
+        if (isRunning("bitgrinder")) { statusmsg("Bitgrinder", "Pass", 2); }
+        else {
+            statusmsg("Bitgrinder", "Down", 3);
+            returnCode += 10;
+        }
+        if (isRunning("monitor")) { statusmsg("Bitgrinder Monitor", "Pass", 2); }
+        else {
+            statusmsg("Bitgrinder Monitor", "Down", 3);
+            returnCode += 1;
+        }
+    }
+    noecho();
+    return returnCode;
+}
+
 int main(int argc, char *argv[]) {
     std::string aux(argv[0]);
     int pos = aux.rfind('/');
     path = aux.substr(0, pos + 1);
     //std::std::cout << "Path: " << path << "\r\n";
     std::string name = aux.substr(pos + 1);
-    if(isRunning("bitgrinder")){statusmsg("Bitgrinder","Pass", 2);}
-    else{statusmsg("Bitgrinder","Down", 3);}
-    if(isRunning("monitor")){statusmsg("Bitgrinder Monitor","Pass", 2);}
-    else{statusmsg("Bitgrinder Monitor","Down", 3);}
+    std::cout << "\r\n\r\n";
+    std::cout << "Bitgrinder " << bitgver << "\r\n\r\n";
+
+    int currentStatus=conInit();
+    if(currentStatus!=0)
+    {
+        if(currentStatus==11){
+            std::cout << "Starting Bitgrinder...\r\n";
+            std::cout << "Starting Monitor...\r\n";
+        }
+        else if(currentStatus==10){
+            std::cout << "Starting Bitgrinder...\r\n";
+        }
+        else if(currentStatus==1){
+            std::cout << "Starting Monitor...\r\n";
+        }
+        else {
+            std::cout << "Unexpected running status. Terminating.\r\n";
+            std::terminate;  // Abnormal exit - if we're lucky dump core
+            //std::exit;
+        }
+    }
+
     try {
         int opt;
         int port;
@@ -69,5 +113,7 @@ int main(int argc, char *argv[]) {
         std::cout << e.what() << "\n";
         return 1;
     }
+    //echo();
+    endwin();
     return 0;
 }

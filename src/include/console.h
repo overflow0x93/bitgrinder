@@ -5,6 +5,10 @@
 
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+#include <curses.h>
+
+#include <cstdlib>
+
 #include <iostream>
 #include <sys/stat.h>
 #include <unistd.h>
