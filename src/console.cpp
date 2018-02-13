@@ -5,10 +5,52 @@
 
 std::string bitgver = "0.0.1.26";
 std::string path = "";
+nlohmann::json configFile;
 
 inline bool exists(const std::string &name) {
     struct stat buffer;
     return (stat(name.c_str(), &buffer) == 0);
+}
+
+void signalHandler( int signum ) {
+/*
+1 SIGABRT
+Abnormal termination of the program, such as a call to abort.
+2 SIGFPE
+An erroneous arithmetic operation, such as a divide by zero or an op$
+3 SIGILL
+Detection of an illegal instruction.
+4 SIGINT
+Receipt of an interactive attention signal.
+5 SIGSEGV
+An invalid access to storage.
+6 SIGTERM
+A termination request sent to the program.
+*/
+   std::cout << "\r\n\r\nInterrupt signal (" << signum << ") received.\r\n";
+   std::cout << "Shutting down...\r\n";
+   // cleanup and close up stuff here
+
+
+// terminate program
+
+   exit(signum);
+}
+
+int initConfig() {
+    
+    std::string config = path + "data/config";
+    std::cout << config << "\r\n";
+    if(exists(config))
+    {
+	configFile = readJsonBinary(config);
+    }
+    else
+    {
+	return 1; // replace with config creation
+    }
+
+    return 0;
 }
 
 bool isRunning(std::string name)
@@ -108,6 +150,7 @@ int main(int argc, char *argv[]) {
         boost::program_options::options_description desc("Allowed options");
         desc.add_options()
                 ("help,?", "display console options")
+                ("config,cfg", "configure bitgrinder options")
                 ("verbose,v", boost::program_options::value<int>()->implicit_value(1),
                  "enable verbosity (optionally specify level)")
                 ("port,p", boost::program_options::value<int>(&port)->implicit_value(1001)
@@ -128,6 +171,20 @@ int main(int argc, char *argv[]) {
             return 0;
         }
 
+        if (vm.count("config")) {
+            std::cout << "\r\n";
+            //std::cout << "Initializing configuration \r\n";
+		if(initConfig()==0)
+		{
+            		statusmsg("Configuration", "PASS", 2);
+		}
+		else
+		{
+            		statusmsg("Configuration", "INIT", 4);
+		}
+            return 0;
+        }
+
         if (vm.count("verbose")) {
             std::cout << "Verbosity enabled.  Level is " << vm["verbose"].as<int>()
                  << "\n";
@@ -140,5 +197,9 @@ int main(int argc, char *argv[]) {
         std::cout << e.what() << "\n";
         return 1;
     }
+
+    signal(SIGINT, signalHandler);
+    while(1){sleep(1);}
+
     return 0;
 }
