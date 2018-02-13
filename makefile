@@ -4,28 +4,34 @@ CC=g++
 LIBS = -lcurl -lstdc++ -lcrypto -l pthread
 all: clean bitgrinder monitor console
 
-bitgrinder: bitgrinder.o gateio.o tradedata.o
-	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o ./bin/system/tradedata.o $(LIBS)
+bitgrinder: bitgrinder.o gateio.o tradedata.o config.o
+	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o ./bin/system/tradedata.o ./bin/system/config.o $(LIBS)
 
-bitgrinder.o: sysdata.o ./src/bitgrinder.cpp ./src/include/bitgrinder.h ./src/include/system/json.hpp ./src/include/system/data.h
+bitgrinder.o: sysdata.o ./src/bitgrinder.cpp ./src/include/bitgrinder.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/system/config.h
 	$(CXX) -c -o ./bin/bitgrinder.o ./src/bitgrinder.cpp $(LIBS)
 
-gateio.o: exchange.o sysdata.o ./src/exchange/gateio.cpp ./src/include/exchange/gateio.h ./src/include/exchange/exchange.h ./src/include/system/json.hpp ./src/include/system/data.h
+config.o: ./src/system/config.cpp ./src/include/system/config.h ./src/include/system/json.hpp
+	$(CXX) -c -o ./bin/system/config.o ./src/system/config.cpp $(LIBS)
+
+gateio.o: exchange.o sysdata.o position.o ./src/exchange/gateio.cpp ./src/include/exchange/gateio.h ./src/include/exchange/exchange.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/exchange/position.h
 	$(CXX) -c -o ./bin/exchange/gateio.o ./src/exchange/gateio.cpp $(LIBS)
+
+position.o: ./src/exchange/position.cpp ./src/include/exchange/position.h
+	$(CXX) -c -o ./bin/exchange/position.o ./src/exchange/position.cpp $(LIBS)
 
 exchange.o: ./src/exchange/exchange.cpp ./src/include/exchange/exchange.h
 	$(CXX) -c -o ./bin/exchange/exchange.o ./src/exchange/exchange.cpp $(LIBS)
 
-monitor: monitor.o
-	$(CXX) -o ./bin/monitor ./bin/monitor.o $(LIBS)
+monitor: monitor.o config.o
+	$(CXX) -o ./bin/monitor ./bin/monitor.o ./bin/system/config.o $(LIBS)
 
-monitor.o: ./src/btgmonitor.cpp ./src/include/btgmonitor.h
+monitor.o: ./src/btgmonitor.cpp ./src/include/btgmonitor.h ./src/include/system/config.h
 	$(CXX) -c -o ./bin/monitor.o ./src/btgmonitor.cpp $(LIBS)
 
-console: console.o
-	$(CXX) -o ./bin/console ./bin/console.o ./bin/system/systatus.o -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
+console: console.o config.o
+	$(CXX) -o ./bin/console ./bin/console.o ./bin/system/systatus.o ./bin/system/config.o -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
-console.o: systatus.o ./src/console.cpp ./src/include/console.h ./src/include/system/systatus.h
+console.o: systatus.o ./src/console.cpp ./src/include/console.h ./src/include/system/systatus.h ./src/include/system/config.h
 	$(CXX) -c -o ./bin/console.o ./src/console.cpp -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
 sysdata.o: ./src/system/data.cpp ./src/include/system/data.h ./src/include/system/json.hpp

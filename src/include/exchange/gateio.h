@@ -1,4 +1,5 @@
 #include "../system/json.hpp"
+#include "./position.h"
 
 #include <chrono>
 #include <curl/curl.h>
@@ -104,7 +105,7 @@ private:
 
 public:
     GateIO(std::string, std::string);
-
+    positionManager gatePositions();
     float getAPIlatency();
     //void sendRequest(std::string url, std::string params);
     nlohmann::json sendRequest(std::string url, std::string params);

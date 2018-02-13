@@ -1,19 +1,13 @@
 #include "./exchange/gateio.h"
-#include "./system/data.h"
 #include "./system/tradedata.h"
 #include "./system/json.hpp"
+#include "./system/config.h"
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <curl/curl.h>
-#include <chrono>
-#include <ctime>
-#include <iostream>
 #include <string>
 #include <thread>
-#include <fstream>
-// Output test
-#include <sstream>
+//#include <fstream>
 
 int init();
 void update();
