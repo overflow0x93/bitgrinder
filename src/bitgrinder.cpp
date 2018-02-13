@@ -47,6 +47,7 @@ void update() {
     updater = true;
     while(updater)
     {
+        // add update for book, refresh faster than periods
     //for (;;) {
         //std::this_thread::sleep_for(std::chrono::milliseconds(5)); //300000
         std::this_thread::sleep_for(std::chrono::milliseconds(300)); //300000

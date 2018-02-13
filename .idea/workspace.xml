@@ -10,24 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe0ecadd-4355-4c0c-9d76-e50bf5c99226" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/exchange/apiscrape.cpp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/exchange/position.cpp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/include/exchange/apiscrape.h" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/include/exchange/position.h" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/include/system/config.h" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/include/system/conparse.h" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/system/config.cpp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/system/conparse.cpp" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/bin/bitgrinder" afterPath="$PROJECT_DIR$/bin/bitgrinder" />
-      <change beforePath="$PROJECT_DIR$/bin/console" afterPath="$PROJECT_DIR$/bin/console" />
-      <change beforePath="$PROJECT_DIR$/bin/monitor" afterPath="$PROJECT_DIR$/bin/monitor" />
-      <change beforePath="$PROJECT_DIR$/makefile" afterPath="$PROJECT_DIR$/makefile" />
       <change beforePath="$PROJECT_DIR$/src/bitgrinder.cpp" afterPath="$PROJECT_DIR$/src/bitgrinder.cpp" />
-      <change beforePath="$PROJECT_DIR$/src/exchange/exchange.cpp" afterPath="$PROJECT_DIR$/src/exchange/exchange.cpp" />
-      <change beforePath="$PROJECT_DIR$/src/include/bitgrinder.h" afterPath="$PROJECT_DIR$/src/include/bitgrinder.h" />
-      <change beforePath="$PROJECT_DIR$/src/include/exchange/exchange.h" afterPath="$PROJECT_DIR$/src/include/exchange/exchange.h" />
-      <change beforePath="$PROJECT_DIR$/src/include/exchange/gateio.h" afterPath="$PROJECT_DIR$/src/include/exchange/gateio.h" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -42,8 +25,8 @@
       <file leaf-file-name="bitgrinder.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/bitgrinder.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="150">
+              <caret line="49" column="59" lean-forward="false" selection-start-line="49" selection-start-column="59" selection-end-line="49" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -63,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/src/include/exchange/position.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
-              <caret line="28" column="22" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="28" selection-end-column="22" />
+              <caret line="28" column="22" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="28" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -291,12 +274,12 @@
       <option name="presentableId" value="Default" />
       <updated>1518330823131</updated>
       <workItem from="1518330827822" duration="66000" />
-      <workItem from="1518330937560" duration="30367000" />
+      <workItem from="1518330937560" duration="30589000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30433000" />
+    <option name="totallyTimeSpent" value="30655000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="719" extended-state="6" />
@@ -565,15 +548,15 @@
     <entry file="file://$PROJECT_DIR$/src/include/exchange/position.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
-          <caret line="28" column="22" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="28" selection-end-column="22" />
+          <caret line="28" column="22" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="28" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/bitgrinder.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="150">
+          <caret line="49" column="59" lean-forward="false" selection-start-line="49" selection-start-column="59" selection-end-line="49" selection-end-column="59" />
           <folding />
         </state>
       </provider>
