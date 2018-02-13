@@ -4,7 +4,7 @@ CC=g++
 LIBS = -lcurl -lstdc++ -lcrypto -l pthread
 all: clean bitgrinder monitor console
 
-bitgrinder: bitgrinder.o gateio.o tradedata.o config.o position.o
+bitgrinder: bitgrinder.o gateio.o tradedata.o config.o position.o sysdata.o
 	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o ./bin/system/tradedata.o ./bin/system/config.o ./bin/exchange/position.o $(LIBS)
 
 bitgrinder.o: sysdata.o gateio.o config.o position.o ./src/bitgrinder.cpp ./src/include/bitgrinder.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/system/config.h
