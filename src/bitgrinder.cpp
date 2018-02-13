@@ -25,10 +25,12 @@ int init() {
         nlohmann::json book{};
         bool buySig{false};
         bool sellSig{false};
-    } tradePosition;
+    } tradePosition;*/
 
-    std::vector<positionManager> allPositions;
-    positionManager();*/
+//    std::cout << "Positions: " << gate.gatePositions.allPositions.size();
+
+    //std::vector<positionManager> allPositions;
+    //positionManager();
     //gate.gatePositions().allPositions.push_back();
     Ticker gVenEth("ven_eth", "gateio");
 /*
@@ -39,7 +41,7 @@ int init() {
     gVenEth.initThread();
 */
 
-    update();
+    //update();
     return 0;
 }
 
@@ -71,9 +73,9 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    std::thread tUpdate(update);
+    //std::thread tUpdate(update);
     // Makes the main thread wait for the new thread to finish execution, therefore blocks its own execution.
-    tUpdate.join();
+    //tUpdate.join();
 
 
 

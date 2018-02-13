@@ -25,8 +25,10 @@ public:
         bool sellSig{false};
     } tradePosition;
 
-    std::vector<positionManager> allPositions;
+    std::vector<basePosition> allPositions;
+
     positionManager();
+    ~positionManager();
     virtual void removePosition(int positionNum);
     virtual int findPosition(std::string pairToFind);
 };

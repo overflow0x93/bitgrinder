@@ -25,6 +25,7 @@ GateIO::GateIO(std::string akey, std::string skey) : api_key{ akey }, api_secret
     struct athistory getAllTradeHistory;
     struct tjson jTradeHistory;
     struct withdraw doWithdraw;
+    positionManager gatePositions();
 
 }
 

@@ -105,7 +105,7 @@ private:
 
 public:
     GateIO(std::string, std::string);
-    positionManager gatePositions();
+    positionManager gatePositions;
     float getAPIlatency();
     //void sendRequest(std::string url, std::string params);
     nlohmann::json sendRequest(std::string url, std::string params);

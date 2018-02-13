@@ -4,17 +4,17 @@ CC=g++
 LIBS = -lcurl -lstdc++ -lcrypto -l pthread
 all: clean bitgrinder monitor console
 
-bitgrinder: bitgrinder.o gateio.o tradedata.o config.o
-	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o ./bin/system/tradedata.o ./bin/system/config.o $(LIBS)
+bitgrinder: bitgrinder.o gateio.o tradedata.o config.o position.o
+	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o ./bin/system/tradedata.o ./bin/system/config.o ./bin/exchange/position.o $(LIBS)
 
-bitgrinder.o: sysdata.o ./src/bitgrinder.cpp ./src/include/bitgrinder.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/system/config.h
+bitgrinder.o: sysdata.o gateio.o config.o position.o ./src/bitgrinder.cpp ./src/include/bitgrinder.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/system/config.h
 	$(CXX) -c -o ./bin/bitgrinder.o ./src/bitgrinder.cpp $(LIBS)
 
 config.o: ./src/system/config.cpp ./src/include/system/config.h ./src/include/system/json.hpp
 	$(CXX) -c -o ./bin/system/config.o ./src/system/config.cpp $(LIBS)
 
 gateio.o: exchange.o sysdata.o position.o ./src/exchange/gateio.cpp ./src/include/exchange/gateio.h ./src/include/exchange/exchange.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/exchange/position.h
-	$(CXX) -c -o ./bin/exchange/gateio.o ./src/exchange/gateio.cpp $(LIBS)
+	$(CXX) -c -o ./bin/exchange/gateio.o ./src/exchange/gateio.cpp ./bin/exchange/position.o $(LIBS)
 
 position.o: ./src/exchange/position.cpp ./src/include/exchange/position.h
 	$(CXX) -c -o ./bin/exchange/position.o ./src/exchange/position.cpp $(LIBS)
