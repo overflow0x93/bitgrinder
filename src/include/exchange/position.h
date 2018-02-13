@@ -14,15 +14,25 @@ class positionManager {
 public:
     struct basePosition {
         //std::string exchange{""};
-        std::string pair{""};
-        float rate{0};
-        float amount{0};
-        float fee{0.002};
-        float returns{0};
-        float reinvest{1.0};
-        nlohmann::json book{};
-        bool buySig{false};
-        bool sellSig{false};
+//        std::string pair{"ocn_eth"};
+//        float rate{0.00002466};
+//        float amount{109666.7267};
+//        float fee{0.002};
+//        float returns{0};
+//        float reinvest{1.0};
+//        nlohmann::json book{};
+//        bool buySig{false};
+//        bool sellSig{false};
+
+        std::string pair = "ocn_eth";
+        float rate = 0.00002466;
+        float amount = 109666.7267;
+        float fee = 0.002;
+        float returns = 0;
+        float reinvest = 1.0;
+//        nlohmann::json book;
+        bool buySig = false;
+        bool sellSig = false;
     } tradePosition;
 
     std::vector<basePosition> allPositions;
@@ -30,5 +40,7 @@ public:
     positionManager();
     ~positionManager();
     virtual void removePosition(int positionNum);
+    virtual void initPosition();
     virtual int findPosition(std::string pairToFind);
+    virtual void PushPosition(std::string pair = "ocn_eth", float rate = 0.00002466, float amount = 109666.7267, float fee = 0.002, float returns = 0, float reinvest = 1.0, bool buySig = false, bool sellSig = false);
 };

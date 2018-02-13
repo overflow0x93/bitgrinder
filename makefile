@@ -14,7 +14,7 @@ config.o: ./src/system/config.cpp ./src/include/system/config.h ./src/include/sy
 	$(CXX) -c -o ./bin/system/config.o ./src/system/config.cpp $(LIBS)
 
 gateio.o: exchange.o sysdata.o position.o ./src/exchange/gateio.cpp ./src/include/exchange/gateio.h ./src/include/exchange/exchange.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/exchange/position.h
-	$(CXX) -c -o ./bin/exchange/gateio.o ./src/exchange/gateio.cpp ./bin/exchange/position.o $(LIBS)
+	$(CXX) -c -o ./bin/exchange/gateio.o ./src/exchange/gateio.cpp $(LIBS)
 
 position.o: ./src/exchange/position.cpp ./src/include/exchange/position.h
 	$(CXX) -c -o ./bin/exchange/position.o ./src/exchange/position.cpp $(LIBS)
