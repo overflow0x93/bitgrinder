@@ -61,6 +61,7 @@ bool updActive = false;
 public:
     std::vector<tradePeriod> PeriodTX;
     Ticker(std::string, std::string);
+    ~Ticker();
     virtual int ReceiveTX();
     virtual int PushCurrent(int time, int txid, std::string type, float rate, float amount, float total);
 virtual void initThread();

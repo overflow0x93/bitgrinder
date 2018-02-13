@@ -13,6 +13,11 @@ Ticker::Ticker(std::string pair, std::string exchange) : cPair{ pair }, eName{ e
     //std::vector<tradeData> partPeriod.individualTX;
 }
 
+Ticker::~Ticker()
+{
+
+}
+
 int Ticker::ReceiveTX()
 {
     return 0;

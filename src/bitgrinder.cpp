@@ -31,12 +31,14 @@ int init() {
     //std::cout << "Positions: " << gate.gatePositions.allPositions[0].pair << "\r\n";
 for (auto pos: gate.gatePositions.allPositions) // element will be a copy of the current array element
 {
-        //std::cout << element << ' ';
 	std::cout << pos.pair << " ";
+	gate.gTickers.push_back(Ticker(pos.pair, "gateio"));
         //Ticker gVenEth("ven_eth", "gateio");
 	//add ticker to gateio ticker vector
 }
 std::cout << "\r\n";
+    std::cout << "Tickers: " << gate.gTickers.size() << "\r\n";
+
 /*
     if(gVenEth.PushCurrent(1234567890123, 124038532, "buy", 0.000323, 230.3, 0.8)==0)
     {

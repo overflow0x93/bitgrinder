@@ -13,7 +13,7 @@ bitgrinder.o: sysdata.o gateio.o config.o position.o ./src/bitgrinder.cpp ./src/
 config.o: ./src/system/config.cpp ./src/include/system/config.h ./src/include/system/json.hpp
 	$(CXX) -c -o ./bin/system/config.o ./src/system/config.cpp $(LIBS)
 
-gateio.o: exchange.o sysdata.o position.o ./src/exchange/gateio.cpp ./src/include/exchange/gateio.h ./src/include/exchange/exchange.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/exchange/position.h
+gateio.o: exchange.o sysdata.o position.o tradedata.o ./src/exchange/gateio.cpp ./src/include/exchange/gateio.h ./src/include/exchange/exchange.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/exchange/position.h ./src/include/system/tradedata.h
 	$(CXX) -c -o ./bin/exchange/gateio.o ./src/exchange/gateio.cpp $(LIBS)
 
 position.o: ./src/exchange/position.cpp ./src/include/exchange/position.h

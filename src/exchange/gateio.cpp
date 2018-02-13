@@ -28,6 +28,7 @@ GateIO::GateIO(std::string akey, std::string skey) : api_key{ akey }, api_secret
     positionManager gatePositions;
 //    gatePositions.initPosition();
 	gatePositions.allPositions.push_back(gatePositions.tradePosition);
+std::vector<Ticker> gTickers;
 }
 
 float GateIO::getAPIlatency()

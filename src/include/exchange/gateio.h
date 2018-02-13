@@ -1,4 +1,5 @@
 #include "../system/json.hpp"
+#include "../system/tradedata.h"
 #include "./position.h"
 
 #include <chrono>
@@ -106,6 +107,7 @@ private:
 public:
     GateIO(std::string, std::string);
     positionManager gatePositions;
+    std::vector<Ticker> gTickers;
     float getAPIlatency();
     //void sendRequest(std::string url, std::string params);
     nlohmann::json sendRequest(std::string url, std::string params);
