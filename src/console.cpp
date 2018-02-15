@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (vm.count("config")) {
-            std::cout << "\r\n";
+            //std::cout << "\r\n";
 	    statusmsg("Configuration", "CSETUP", 4);
             //std::cout << "Initializing configuration \r\n";
 		/*

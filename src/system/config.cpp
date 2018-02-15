@@ -150,7 +150,7 @@ int initConfig(std::string ipath) {
 
 nlohmann::json readConfig(std::string cpath)
 {
-	std::cout<<cpath<<"\r\n";
+	//std::cout<<cpath<<"\r\n";
 	std::string configpath = cpath + "data/config.cb";
 	initConfig(configpath);
         //cfgFile = readJsonBinary(configpath);

@@ -45,14 +45,3 @@ public:
     virtual void PushPosition(std::string pair = "ocn_eth", float rate = 0.00002466, float amount = 109666.7267, float fee = 0.002, float returns = 0, float reinvest = 1.0, bool buySig = false, bool sellSig = false);
 };
 
-/*
-class absTradeState{//https://stackoverflow.com/questions/14676709/c-code-for-state-machine
-public:
-	virtual void buy(txs& op, std::string pair) = "";
-	virtual void sell(txs& op, std::string pair) = "";
-	virtual ~tradeState();
-	protected:
-	void setState(txs& op, absTradeState* tst);
-	void updateBase(txs& op, float bAmount);
-};
-*/
