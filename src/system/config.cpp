@@ -68,18 +68,17 @@ std::string conFile = "./bin/data/config";
 	  std::cout << "Enter pair you traded < example: eos_eth > : ";
           std::getline(std::cin, input);
           if(input.empty()){
-	    tempJson["Exchange"]["gateio"]["Position"]["eos_eth"] = "eos_eth";
-	    tempJson["Exchange"]["gateio"]["Position"]["Currency"] = "eos_eth";
+	    input = "eos_eth";
 	    //root.put("Exchange.gateio.Position.Currency", 0.002);}
 	  }
 	  else{
-	    workingJson["Exchange"]["gateio"]["Position"][input] = input;
-	    workingJson["Exchange"]["gateio"]["Position"]["Currency"] = input;
+
 	  }
-//	  tempJson["Exchange"]["gateio"]["Position"]["Amount"] = 200.5;
-//          tempJson["Exchange"]["gateio"]["Position"]["BuyRate"] = 0.00003125;
-//          tempJson["Exchange"]["gateio"]["Position"]["Reinvest"] = 100.0;
-//	  workingJson["Exchange"]["gateio"]["Position"].push_back(tempJson["Exchange"]["gateio"]["Position"]);
+	    workingJson["Exchange"]["gateio"]["Position"][input]["Pair"] = input;
+
+	  workingJson["Exchange"]["gateio"]["Position"][input]["Amount"] = 200.5;
+          workingJson["Exchange"]["gateio"]["Position"][input]["BuyRate"] = 0.00003125;
+          workingJson["Exchange"]["gateio"]["Position"][input]["Reinvest"] = 100.0;
           std::cout << "Do you have any other current positions [Y]/N : ";
           std::getline(std::cin, input);
 	  if(input.empty() || input == "Y" || input == "y" || input == "Yes" || input == "YES" || input == "yes"){bMorePos = true;}

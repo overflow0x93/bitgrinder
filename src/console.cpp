@@ -29,6 +29,9 @@ A termination request sent to the program.
 */
    std::cout << "\r\n\r\nInterrupt signal (" << signum << ") received.\r\n";
    std::cout << "Shutting down...\r\n";
+
+// encrypt config file
+
    // cleanup and close up stuff here
 
 
@@ -68,6 +71,9 @@ int conInit()
 }
 
 int main(int argc, char *argv[]) {
+    signal(SIGINT, signalHandler);
+    signal(SIGTERM, signalHandler);
+
     std::string aux(argv[0]);
     int pos = aux.rfind('/');
     binpath = aux.substr(0, pos + 1);
@@ -189,7 +195,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    signal(SIGINT, signalHandler);
     while(1){sleep(1);}
 
     return 0;
