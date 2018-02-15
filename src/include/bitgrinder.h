@@ -2,7 +2,7 @@
 //#include "./system/tradedata.h"
 #include "./system/json.hpp"
 #include "./system/config.h"
-#include "./system/data.h"
+//#include "./system/data.h"
 #include <csignal>
 #include <stdlib.h>
 #include <stdio.h>

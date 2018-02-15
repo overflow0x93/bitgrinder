@@ -3,7 +3,8 @@
 //
 #include "./system/systatus.h"
 #include "./system/json.hpp"
-#include "./system/data.h"
+//#include "./system/data.h"
+#include "./system/config.h"
 #include <csignal>
 
 #include <boost/program_options.hpp>

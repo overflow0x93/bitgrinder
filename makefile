@@ -10,7 +10,7 @@ bitgrinder: bitgrinder.o gateio.o tradedata.o config.o position.o sysdata.o
 bitgrinder.o: sysdata.o gateio.o config.o position.o ./src/bitgrinder.cpp ./src/include/bitgrinder.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/system/config.h
 	$(CXX) -c -o ./bin/bitgrinder.o ./src/bitgrinder.cpp $(LIBS)
 
-config.o: ./src/system/config.cpp ./src/include/system/config.h ./src/include/system/json.hpp
+config.o: sysdata.o ./src/system/config.cpp ./src/include/system/config.h ./src/include/system/json.hpp ./src/include/system/data.h
 	$(CXX) -c -o ./bin/system/config.o ./src/system/config.cpp $(LIBS)
 
 gateio.o: exchange.o sysdata.o position.o tradedata.o ./src/exchange/gateio.cpp ./src/include/exchange/gateio.h ./src/include/exchange/exchange.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/exchange/position.h ./src/include/system/tradedata.h
@@ -22,16 +22,16 @@ position.o: ./src/exchange/position.cpp ./src/include/exchange/position.h
 exchange.o: ./src/exchange/exchange.cpp ./src/include/exchange/exchange.h
 	$(CXX) -c -o ./bin/exchange/exchange.o ./src/exchange/exchange.cpp $(LIBS)
 
-monitor: monitor.o config.o
-	$(CXX) -o ./bin/monitor ./bin/monitor.o ./bin/system/config.o $(LIBS)
+monitor: monitor.o 
+	$(CXX) -o ./bin/monitor ./bin/monitor.o $(LIBS)
 
-monitor.o: ./src/btgmonitor.cpp ./src/include/btgmonitor.h ./src/include/system/config.h
+monitor.o: ./src/btgmonitor.cpp ./src/include/btgmonitor.h
 	$(CXX) -c -o ./bin/monitor.o ./src/btgmonitor.cpp $(LIBS)
 
 console: console.o config.o sysdata.o
 	$(CXX) -o ./bin/console ./bin/console.o ./bin/system/systatus.o ./bin/system/config.o ./bin/system/sysdata.o -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
-console.o: systatus.o sysdata.o ./src/console.cpp ./src/include/console.h ./src/include/system/systatus.h ./src/include/system/config.h ./src/include/system/json.hpp ./src/include/system/data.h
+console.o: systatus.o sysdata.o ./src/console.cpp ./src/include/console.h ./src/include/system/systatus.h ./src/include/system/json.hpp ./src/include/system/data.h ./src/include/system/config.h
 	$(CXX) -c -o ./bin/console.o ./src/console.cpp -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
 sysdata.o: ./src/system/data.cpp ./src/include/system/data.h ./src/include/system/json.hpp

@@ -4,7 +4,7 @@
 #include "./include/console.h"
 
 std::string bitgver = "0.0.1.26";
-std::string path = "";
+std::string binpath = "";
 nlohmann::json configFile;
 
 inline bool exists(const std::string &name) {
@@ -35,22 +35,6 @@ A termination request sent to the program.
 // terminate program
 
    exit(signum);
-}
-
-int initConfig() {
-    
-    std::string config = path + "data/config";
-    std::cout << config << "\r\n";
-    if(exists(config))
-    {
-	configFile = readJsonBinary(config);
-    }
-    else
-    {
-	return 1; // replace with config creation
-    }
-
-    return 0;
 }
 
 bool isRunning(std::string name)
@@ -86,17 +70,19 @@ int conInit()
 int main(int argc, char *argv[]) {
     std::string aux(argv[0]);
     int pos = aux.rfind('/');
-    path = aux.substr(0, pos + 1);
+    binpath = aux.substr(0, pos + 1);
     //std::std::cout << "Path: " << path << "\r\n";
     std::string name = aux.substr(pos + 1);
     std::cout << "\r\n\r\n";
     std::cout << "Bitgrinder " << bitgver << "\r\n\r\n";
 
     int currentStatus=conInit();
+
+//    configFile = readConfig(binpath);
     if(currentStatus!=0)
     {
         std::string sysCmd = "";
-        sysCmd.append(path);
+        sysCmd.append(binpath);
         if(currentStatus==11){
             std::cout << "Starting Bitgrinder...\r\n";
             sysCmd.append("bitgrinder &");
@@ -108,7 +94,7 @@ int main(int argc, char *argv[]) {
             }
             std::cout << "Starting Monitor...\r\n";
             sysCmd = "";
-            sysCmd.append(path);
+            sysCmd.append(binpath);
             sysCmd.append("monitor &");
             //system(sysCmd.c_str());
             if (isRunning("monitor")) { statusmsg("Start Bitgrinder Monitor", "Pass", 2); }
@@ -174,14 +160,18 @@ int main(int argc, char *argv[]) {
         if (vm.count("config")) {
             std::cout << "\r\n";
             //std::cout << "Initializing configuration \r\n";
-		if(initConfig()==0)
+		/*
+		if(initConfig(binpath)==0)
 		{
             		statusmsg("Configuration", "PASS", 2);
 		}
 		else
 		{
             		statusmsg("Configuration", "INIT", 4);
-		}
+		}*/
+		//configFile = readConfig(binpath);
+		initConfig(binpath); // read has end of input error
+		//nlohmann::json File = readJsonBinary("./bin/data/config.cfg");
             return 0;
         }
 

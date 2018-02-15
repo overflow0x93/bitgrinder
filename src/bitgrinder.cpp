@@ -4,7 +4,7 @@
 bool updater = false;
 std::string bitgver = "0.0.1.26";
 std::string path = "";
-std::string config = "";
+//std::string config = "";
 nlohmann::json configFile;
 
 inline bool exists(const std::string &name) {
@@ -38,11 +38,14 @@ A termination request sent to the program.
 }
 
 int init() {
-    config = path + "data/config";
-    std::cout << config << "\r\n";
-    if(exists(config))configFile = readJsonBinary(config); 
-    GateIO gate("B5738462-1EB0-449E-AEEC-3F6C1D7DA0DA",
-                "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
+    configFile = readConfig(path);    
+    //config = path + "data/config";
+    //std::cout << config << "\r\n";
+    //if(exists(config))configFile = readJsonBinary(config); 
+//    GateIO gate("B5738462-1EB0-449E-AEEC-3F6C1D7DA0DA",
+//                "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
+    GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
+                configFile["Exchange"]["gateio"]["Account"]["KEY"].dump());
 
     std::cout << "Positions: " << gate.gatePositions.allPositions.size() << " : ";
 for (auto pos: gate.gatePositions.allPositions) // element will be a copy of the current array element
