@@ -9,12 +9,28 @@
 #include <unistd.h>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #ifndef BITGRINDER_CONFIG_H
 #define BITGRINDER_CONFIG_H
 
 
+class config
+{
+  private:
+	std::string decrypt(std::string encrypted);
+	std::string encrypt(std::string unencrypted);
+  public:
+	virtual std::string getAPI(std::string exchange);
+	virtual std::string getSecret(std::string exchange);
+	virtual void genConfig();
+	virtual std::vector<std::string> getPositions(std::string exchange);
+};
+
 int setupConfig();
 int initConfig(std::string ipath);
 nlohmann::json readConfig(std::string cpath);
+
+
+
 #endif //BITGRINDER_CONFIG_H

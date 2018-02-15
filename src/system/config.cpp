@@ -11,6 +11,11 @@ inline bool exists(const std::string &name) {
     return (stat(name.c_str(), &buffer) == 0);
 }
 
+std::string getAPI()
+{
+	return "";
+}
+
 int setupConfig(std::string config) {
 std::cout << config;
     nlohmann::json workingJson,tempJson;

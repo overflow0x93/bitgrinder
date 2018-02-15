@@ -82,6 +82,73 @@ int main(int argc, char *argv[]) {
     std::cout << "\r\n\r\n";
     std::cout << "Bitgrinder " << bitgver << "\r\n\r\n";
 
+    if(!exists("./bin/data/config")){    
+	statusmsg("Configuration", "INIT", 4);
+	initConfig(binpath);} 
+    nlohmann::json ctest = readJsonBinary("./bin/data/config");
+    statusmsg("Configuration", "Pass", 2);
+
+
+    try {
+        int opt;
+        int port;
+        boost::program_options::options_description desc("Allowed options");
+        desc.add_options()
+                ("help,?", "display console options")
+                ("config,cfg", "configure bitgrinder options")
+                ("verbose,v", boost::program_options::value<int>()->implicit_value(1),
+                 "enable verbosity (optionally specify level)")
+                ("port,p", boost::program_options::value<int>(&port)->implicit_value(1001)
+                         ->default_value(0,"no"),
+                 "bitgrinder listen port")
+                ("cli", "enter command line interface")
+                ;
+
+        boost::program_options::positional_options_description p;
+        boost::program_options::variables_map vm;
+        boost::program_options::store(boost::program_options::command_line_parser(argc, argv).
+                options(desc).positional(p).run(), vm);
+        boost::program_options::notify(vm);
+
+        if (vm.count("help")) {
+            std::cout << "Usage: options_description [options]\n";
+            std::cout << desc;
+            return 0;
+        }
+
+        if (vm.count("config")) {
+            std::cout << "\r\n";
+	    statusmsg("Configuration", "CSETUP", 4);
+            //std::cout << "Initializing configuration \r\n";
+		/*
+		if(initConfig(binpath)==0)
+		{
+            		statusmsg("Configuration", "PASS", 2);
+		}
+		else
+		{
+		}*/
+		//configFile = readConfig(binpath);
+		initConfig(binpath); 
+		nlohmann::json ctest = readJsonBinary("./bin/data/config");
+      		statusmsg("Configuration", "PASS", 2);
+//		std::cout << ctest.dump(4);
+            return 0;
+        }
+
+        if (vm.count("verbose")) {
+            std::cout << "Verbosity enabled.  Level is " << vm["verbose"].as<int>()
+                 << "\n";
+        }
+
+
+    }
+    catch(std::exception& e)
+    {
+        std::cout << e.what() << "\n";
+        return 1;
+    }
+
     int currentStatus=conInit();
 
 //    configFile = readConfig(binpath);
@@ -134,65 +201,6 @@ int main(int argc, char *argv[]) {
             std::terminate;  // Abnormal exit - if we're lucky dump core
             //std::exit;
         }
-    }
-
-    try {
-        int opt;
-        int port;
-        boost::program_options::options_description desc("Allowed options");
-        desc.add_options()
-                ("help,?", "display console options")
-                ("config,cfg", "configure bitgrinder options")
-                ("verbose,v", boost::program_options::value<int>()->implicit_value(1),
-                 "enable verbosity (optionally specify level)")
-                ("port,p", boost::program_options::value<int>(&port)->implicit_value(1001)
-                         ->default_value(0,"no"),
-                 "bitgrinder listen port")
-                ("cli", "enter command line interface")
-                ;
-
-        boost::program_options::positional_options_description p;
-        boost::program_options::variables_map vm;
-        boost::program_options::store(boost::program_options::command_line_parser(argc, argv).
-                options(desc).positional(p).run(), vm);
-        boost::program_options::notify(vm);
-
-        if (vm.count("help")) {
-            std::cout << "Usage: options_description [options]\n";
-            std::cout << desc;
-            return 0;
-        }
-
-        if (vm.count("config")) {
-            std::cout << "\r\n";
-            //std::cout << "Initializing configuration \r\n";
-		/*
-		if(initConfig(binpath)==0)
-		{
-            		statusmsg("Configuration", "PASS", 2);
-		}
-		else
-		{
-            		statusmsg("Configuration", "INIT", 4);
-		}*/
-		//configFile = readConfig(binpath);
-		initConfig(binpath); // read has end of input error
-		nlohmann::json ctest = readJsonBinary("./bin/data/config");
-		std::cout << ctest.dump(4);
-            return 0;
-        }
-
-        if (vm.count("verbose")) {
-            std::cout << "Verbosity enabled.  Level is " << vm["verbose"].as<int>()
-                 << "\n";
-        }
-
-
-    }
-    catch(std::exception& e)
-    {
-        std::cout << e.what() << "\n";
-        return 1;
     }
 
     while(1){sleep(1);}
