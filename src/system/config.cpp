@@ -124,6 +124,6 @@ nlohmann::json readConfig(std::string cpath)
 	initConfig(configpath);
         //cfgFile = readJsonBinary(configpath);
 	//return cfgFile;
-	nlohmann::json returnJson = readJsonBinary(configpath);
+	//nlohmann::json returnJson = readJsonBinary(configpath);
 	return returnJson;
 }

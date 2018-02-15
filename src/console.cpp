@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) {
 		}*/
 		//configFile = readConfig(binpath);
 		initConfig(binpath); // read has end of input error
-		//nlohmann::json File = readJsonBinary("./bin/data/config.cfg");
+		nlohmann::json File = readJsonBinary("./bin/data/config.cfg");
             return 0;
         }
 
