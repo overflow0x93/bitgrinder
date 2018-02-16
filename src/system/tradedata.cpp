@@ -8,6 +8,7 @@ Ticker::Ticker(std::string pair, std::string exchange) : cPair{pair}, eName{exch
     struct tradeData tx;
     struct tradePeriod fullPeriod;
     struct currentPeriod partPeriod;
+    initThread();
     //std::vector<tradePeriod> dWindow;
     //std::vector<tradeData> partPeriod.individualTX;
 }

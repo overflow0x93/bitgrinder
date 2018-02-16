@@ -3,8 +3,6 @@
 
 bool updater = false;
 std::string bitgver = "0.0.1.26";
-//std::string path = "";
-//std::string config = "";
 nlohmann::json configFile;
 
 inline bool exists(const std::string &name) {
@@ -17,6 +15,8 @@ void signalHandler(int signum) {
     std::cout << "Shutting down...\r\n";
     // cleanup and close up stuff here
 
+    // Ticker termination failing - object deleted already
+    std::cout << "\r\n";
 
     // terminate program
 
@@ -29,6 +29,7 @@ int init(std::string path) {
 //                "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
     GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
                 configFile["Exchange"]["gateio"]["Account"]["KEY"].dump());
+    //gateIOp = &gate;
     std::cout << "API: " << configFile["Exchange"]["gateio"]["Account"]["API"].dump() << "\r\n";
     std::cout << "Positions in config: " << configFile["Exchange"]["gateio"]["Position"].size() << " : ";
 
@@ -50,10 +51,6 @@ int init(std::string path) {
         // Add other details here
         newTicker.vitals.currencyPair = pos.pair;
         gate.gTickers.push_back(newTicker);
-
-        //gate.gTickers.push_back(Ticker(pos.pair, "gateio"));
-        //Ticker gVenEth("ven_eth", "gateio");
-        //add ticker to gateio ticker vector
     }
     std::cout << "\r\n";
     std::cout << "Tickers: " << gate.gTickers.size() << " : ";

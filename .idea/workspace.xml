@@ -13,7 +13,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/bin/bitgrinder" afterPath="$PROJECT_DIR$/bin/bitgrinder" />
       <change beforePath="$PROJECT_DIR$/src/bitgrinder.cpp" afterPath="$PROJECT_DIR$/src/bitgrinder.cpp" />
-      <change beforePath="$PROJECT_DIR$/src/exchange/position.cpp" afterPath="$PROJECT_DIR$/src/exchange/position.cpp" />
+      <change beforePath="$PROJECT_DIR$/src/system/tradedata.cpp" afterPath="$PROJECT_DIR$/src/system/tradedata.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,8 +28,28 @@
       <file leaf-file-name="bitgrinder.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/bitgrinder.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="61" column="54" lean-forward="true" selection-start-line="61" selection-start-column="54" selection-end-line="61" selection-end-column="54" />
+            <state relative-caret-position="315">
+              <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tradedata.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/include/system/tradedata.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="71" column="28" lean-forward="false" selection-start-line="71" selection-start-column="17" selection-end-line="71" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tradedata.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/system/tradedata.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="44" column="13" lean-forward="false" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -105,16 +125,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/include/system/config.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="43" column="34" lean-forward="false" selection-start-line="43" selection-start-column="34" selection-end-line="43" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
@@ -130,6 +140,7 @@
       <find>count</find>
       <find>nPos</find>
       <find>removeSpaces</find>
+      <find>updActive</find>
     </findStrings>
     <replaceStrings>
       <replace>boost::program_options::</replace>
@@ -156,15 +167,15 @@
         <option value="$PROJECT_DIR$/src/include/exchange/position.cpp" />
         <option value="$PROJECT_DIR$/makefile" />
         <option value="$PROJECT_DIR$/src/include/exchange/gateio.h" />
-        <option value="$PROJECT_DIR$/src/system/tradedata.cpp" />
         <option value="$PROJECT_DIR$/src/exchange/gateio.cpp" />
-        <option value="$PROJECT_DIR$/src/include/system/tradedata.h" />
         <option value="$PROJECT_DIR$/src/include/exchange/position.h" />
         <option value="$PROJECT_DIR$/src/include/system/config.h" />
         <option value="$PROJECT_DIR$/src/console.cpp" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/system/config.cpp" />
         <option value="$PROJECT_DIR$/src/exchange/position.cpp" />
+        <option value="$PROJECT_DIR$/src/system/tradedata.cpp" />
+        <option value="$PROJECT_DIR$/src/include/system/tradedata.h" />
         <option value="$PROJECT_DIR$/src/bitgrinder.cpp" />
       </list>
     </option>
@@ -235,6 +246,12 @@
               <item name="include" type="462c0819:PsiDirectoryNode" />
               <item name="system" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="bitgrinder" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="bitgrinder" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="system" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -277,12 +294,12 @@
       <option name="presentableId" value="Default" />
       <updated>1518330823131</updated>
       <workItem from="1518330827822" duration="66000" />
-      <workItem from="1518330937560" duration="41483000" />
+      <workItem from="1518330937560" duration="43682000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41549000" />
+    <option name="totallyTimeSpent" value="43748000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="719" extended-state="6" />
@@ -484,14 +501,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/system/tradedata.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="19" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/include/system/config.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="161">
@@ -540,14 +549,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/include/system/tradedata.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="18" column="32" lean-forward="false" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/exchange/position.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
@@ -564,10 +565,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/system/tradedata.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="44" column="13" lean-forward="false" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/include/system/tradedata.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="71" column="28" lean-forward="false" selection-start-line="71" selection-start-column="17" selection-end-line="71" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/bitgrinder.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="61" column="54" lean-forward="true" selection-start-line="61" selection-start-column="54" selection-end-line="61" selection-end-column="54" />
+        <state relative-caret-position="315">
+          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding />
         </state>
       </provider>
