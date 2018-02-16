@@ -1,6 +1,7 @@
 # CBOR Transaction Data
 bin/data/exchange/
 cmake-build-debug/
+bin/data/config
 
 # Prerequisites
 *.d

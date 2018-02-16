@@ -2,8 +2,7 @@
 
 std::string buffer;
 
-GateIO::GateIO(std::string akey, std::string skey) : api_key{ akey }, api_secret{ skey }
-{
+GateIO::GateIO(std::string akey, std::string skey) : api_key{akey}, api_secret{skey} {
     // Basic Gate.io functions init
     struct pairs getPairs;
     struct marketinfo getMarketInfo;
@@ -27,30 +26,27 @@ GateIO::GateIO(std::string akey, std::string skey) : api_key{ akey }, api_secret
     struct withdraw doWithdraw;
     positionManager gatePositions;
 //    gatePositions.initPosition();
-	gatePositions.allPositions.push_back(gatePositions.tradePosition);
-std::vector<Ticker> gTickers;
+    gatePositions.allPositions.push_back(gatePositions.tradePosition);
+    std::vector<Ticker> gTickers;
 }
 
-float GateIO::getAPIlatency()
-{
+float GateIO::getAPIlatency() {
     auto started = std::chrono::high_resolution_clock::now();
     // Setup output redirect
     sendRequest(this->getBalances.URL, this->getBalances.params);
     auto done = std::chrono::high_resolution_clock::now();
-    return std::chrono::duration_cast<std::chrono::milliseconds>(done-started).count();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count();
 }
 
-//void GateIO::sendRequest(std::string url, std::string params)
-nlohmann::json GateIO::sendRequest(std::string url, std::string params)
-{
+nlohmann::json GateIO::sendRequest(std::string url, std::string params) {
     CURL *curl;
     CURLcode res;
     curl = curl_easy_init();
     std::string outBuffer;
     //nlohmann::json jsonResult;
-    nlohmann::json jsonResult = {{"result","fail"}};
+    nlohmann::json jsonResult = {{"result", "fail"}};
 
-    if(curl) {
+    if (curl) {
         struct curl_slist *chunk = NULL;
         std::string tURL = api_url;
         //tURL.append("");
@@ -58,18 +54,18 @@ nlohmann::json GateIO::sendRequest(std::string url, std::string params)
         curl_easy_setopt(curl, CURLOPT_URL, tURL.c_str());
         //curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
-        chunk = curl_slist_append(chunk, "Accept: application/x-www-form-urlencoded" );
-        chunk = curl_slist_append(chunk, "Content-type: application/x-www-form-urlencoded" );
-        chunk = curl_slist_append(chunk, "Charsets: utf-8" );
+        chunk = curl_slist_append(chunk, "Accept: application/x-www-form-urlencoded");
+        chunk = curl_slist_append(chunk, "Content-type: application/x-www-form-urlencoded");
+        chunk = curl_slist_append(chunk, "Charsets: utf-8");
 
         std::string parameters = params;
 
         // Attempt to write results to buffer for processing
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outBuffer);
-        chunk = curl_slist_append(chunk, "Accept:" );
+        chunk = curl_slist_append(chunk, "Accept:");
 
-        if(params != "" ){
+        if (params != "") {
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameters.c_str());
             curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, parameters.length());
             parameters = jsonToSign(params);
@@ -82,22 +78,24 @@ nlohmann::json GateIO::sendRequest(std::string url, std::string params)
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
 
             //std::string sysCmd = "echo -n '";sysCmd.append(params);sysCmd.append("'");               //;sysCmd.append(api_key);sysCmd.append("&'");
-            std::string sysCmd = "echo -n '";sysCmd.append(jsonToSign(params));sysCmd.append("'");               //;sysCmd.append(api_key);sysCmd.append("&'");
+            std::string sysCmd = "echo -n '";
+            sysCmd.append(jsonToSign(params));
+            sysCmd.append("'");               //;sysCmd.append(api_key);sysCmd.append("&'");
             ///////////////////////////////////////////////////////
             // THIS IS WORKING SIGN
             //echo -n "currencyPair=eos_eth&orderNumber=" | openssl dgst -sha512 -mac HMAC -macopt key:3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc | cut -c 10
             ///////////////////////////////////////////////////////
-            sysCmd.append(" | openssl dgst -sha512 -mac HMAC -macopt key:3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc | cut -c 10-");
+            sysCmd.append(
+                    " | openssl dgst -sha512 -mac HMAC -macopt key:3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc | cut -c 10-");
 
             // Clean up output from system call
-            std::array<char,128> buffer;
+            std::array<char, 128> buffer;
             std::string result;
             std::shared_ptr<FILE> pipe(popen(sysCmd.c_str(), "r"), pclose);
             if (!pipe) throw std::runtime_error("popen() failed!");
-            while (!feof(pipe.get()))
-            {
-                if (fgets(buffer.data(),128,pipe.get())!= nullptr)
-                    result+=buffer.data();
+            while (!feof(pipe.get())) {
+                if (fgets(buffer.data(), 128, pipe.get()) != nullptr)
+                    result += buffer.data();
             }
             // Create  header
             std::string signHeader = "";
@@ -117,16 +115,15 @@ nlohmann::json GateIO::sendRequest(std::string url, std::string params)
         res = curl_easy_perform(curl);
 
         // Check for errors
-        if(res != CURLE_OK){
+        if (res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() failed: %s\n",
                     curl_easy_strerror(res));
-		jsonResult = {{"result","fail"}};
-		//json jsonResult = {{"result":"fail"}};
-	}
-	else{
-		auto j3 = nlohmann::json::parse(outBuffer);
-        	jsonResult = j3;
-	}
+            jsonResult = {{"result", "fail"}};
+            //json jsonResult = {{"result":"fail"}};
+        } else {
+            auto j3 = nlohmann::json::parse(outBuffer);
+            jsonResult = j3;
+        }
         // always cleanup
         curl_easy_cleanup(curl);
 
@@ -136,25 +133,21 @@ nlohmann::json GateIO::sendRequest(std::string url, std::string params)
     return jsonResult;
 }
 
-nlohmann::json GateIO::joinTradeData(nlohmann::json currentTradeData, nlohmann::json addTradeData)
-{
+nlohmann::json GateIO::joinTradeData(nlohmann::json currentTradeData, nlohmann::json addTradeData) {
     return currentTradeData;
 }
 
-nlohmann::json GateIO::getFullTradeData(int startTradeID, nlohmann::json addTradeData)
-{
+nlohmann::json GateIO::getFullTradeData(int startTradeID, nlohmann::json addTradeData) {
     nlohmann::json currentTradeData;
     return currentTradeData;
 }
 
-static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
-{
-    ((std::string*)userp)->append((char*)contents, size * nmemb);
+static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
+    ((std::string *) userp)->append((char *) contents, size * nmemb);
     return size * nmemb;
 }
 
-std::string jsonToSign(nlohmann::json params)
-{
+std::string jsonToSign(nlohmann::json params) {
     std::string signValue = "";
 
     //std::cout << params.dump() << "\r\n";
@@ -172,8 +165,7 @@ std::string jsonToSign(nlohmann::json params)
     return signValue;
 }
 
-void removeSpaces(char *str)
-{
+void removeSpaces(char *str) {
     // To keep track of non-space character count
     int count = 0;
 

@@ -3,7 +3,7 @@
 
 bool updater = false;
 std::string bitgver = "0.0.1.26";
-std::string path = "";
+//std::string path = "";
 //std::string config = "";
 nlohmann::json configFile;
 
@@ -12,33 +12,19 @@ inline bool exists(const std::string &name) {
     return (stat(name.c_str(), &buffer) == 0);
 }
 
-void signalHandler( int signum ) {
-/*
-1 SIGABRT
-Abnormal termination of the program, such as a call to abort.
-2 SIGFPE
-An erroneous arithmetic operation, such as a divide by zero or an operation resulting in overflow.
-3 SIGILL
-Detection of an illegal instruction.
-4 SIGINT
-Receipt of an interactive attention signal.
-5 SIGSEGV
-An invalid access to storage.
-6 SIGTERM
-A termination request sent to the program.
-*/
-   std::cout << "\r\n\r\nInterrupt signal (" << signum << ") received.\n";
-   std::cout << "Shutting down...\r\n";
-   // cleanup and close up stuff here  
-   
+void signalHandler(int signum) {
+    std::cout << "\r\n\r\nInterrupt signal (" << signum << ") received.\n";
+    std::cout << "Shutting down...\r\n";
+    // cleanup and close up stuff here
 
-// terminate program  
 
-   exit(signum);  
+    // terminate program
+
+    exit(signum);
 }
 
-int init() {
-    configFile = readConfig(path);    
+int init(std::string path) {
+    configFile = readConfig(path);
     //config = path + "data/config";
     //std::cout << config << "\r\n";
     //if(exists(config))configFile = readJsonBinary(config); 
@@ -46,22 +32,33 @@ int init() {
 //                "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
     GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
                 configFile["Exchange"]["gateio"]["Account"]["KEY"].dump());
+    std::cout << "API: " << configFile["Exchange"]["gateio"]["Account"]["API"].dump() << "\r\n";
+    std::cout << "Positions in config: " << configFile["Exchange"]["gateio"]["Position"].size() << " : ";
 
+    //for (auto cpos: configFile["Exchange"]["gateio"]["Position"].size())
+    int nCnt = 0;
+    while (nCnt < configFile["Exchange"]["gateio"]["Position"].size())
+    {
+        std::cout << configFile["Exchange"]["gateio"]["Position"][nCnt]["Pair"].dump() << " "; //.dump() << " ";
+        //std::cout << ["Pair"].dump() << " ";
+        nCnt++;
+    }
+    std::cout << "\r\n";
     std::cout << "Positions: " << gate.gatePositions.allPositions.size() << " : ";
-for (auto pos: gate.gatePositions.allPositions) // element will be a copy of the current array element
-{
-	std::cout << pos.pair << " ";
-	gate.gTickers.push_back(Ticker(pos.pair, "gateio"));
+    for (auto pos: gate.gatePositions.allPositions) // element will be a copy of the current array element
+    {
+        std::cout << pos.pair << " ";
+        gate.gTickers.push_back(Ticker(pos.pair, "gateio"));
         //Ticker gVenEth("ven_eth", "gateio");
-	//add ticker to gateio ticker vector
-}
-std::cout << "\r\n";
+        //add ticker to gateio ticker vector
+    }
+    std::cout << "\r\n";
     std::cout << "Tickers: " << gate.gTickers.size() << " : ";
-for (auto ticks: gate.gTickers) // element will be a$
-{
+    for (auto ticks: gate.gTickers) // element will be a$
+    {
         std::cout << ticks.vitals.currencyPair << " ";
-}
-std::cout << "\r\n";
+    }
+    std::cout << "\r\n";
 
 /*
     if(gVenEth.PushCurrent(1234567890123, 124038532, "buy", 0.000323, 230.3, 0.8)==0)
@@ -77,10 +74,9 @@ std::cout << "\r\n";
 
 void update() {
     updater = true;
-    while(updater)
-    {
+    while (updater) {
         // add update for book, refresh faster than periods
-    //for (;;) {
+        //for (;;) {
         //std::this_thread::sleep_for(std::chrono::milliseconds(5)); //300000
         std::this_thread::sleep_for(std::chrono::milliseconds(300)); //300000
         std::cout << "5 minutes.";
@@ -88,14 +84,13 @@ void update() {
     }
 }
 
-int main(int argc, char *argv[])
-{
-	std::string aux(argv[0]);
+int main(int argc, char *argv[]) {
+    std::string aux(argv[0]);
     int pos = aux.rfind('/');
-    path = aux.substr(0, pos + 1);
+    std::string path = aux.substr(0, pos + 1);
     std::string name = aux.substr(pos + 1);
 
-    if (init() == 0) {
+    if (init(path) == 0) {
         std::cout << "Initialized. \r\n";
 
     } else {
@@ -103,8 +98,8 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    signal(SIGINT, signalHandler); 
-    while(1){sleep(1);}
+    signal(SIGINT, signalHandler);
+    while (1) { sleep(1); }
     //std::thread tUpdate(update);
     // Makes the main thread wait for the new thread to finish execution, therefore blocks its own execution.
     //tUpdate.join();

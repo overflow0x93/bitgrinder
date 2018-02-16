@@ -4,6 +4,11 @@
 #include "./json.hpp"
 #include "./data.h"
 
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <openssl/evp.h>
+
 #include <iostream>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -15,22 +20,32 @@
 #define BITGRINDER_CONFIG_H
 
 
-class config
-{
-  private:
-	std::string decrypt(std::string encrypted);
-	std::string encrypt(std::string unencrypted);
-  public:
-	virtual std::string getAPI(std::string exchange);
-	virtual std::string getSecret(std::string exchange);
-	virtual void genConfig();
-	virtual std::vector<std::string> getPositions(std::string exchange);
+class Config {
+private:
+
+    std::string decrypt(std::string encrypted);
+
+    std::string encrypt(std::string unencrypted);
+
+public:
+    Config();
+
+    ~Config();
+
+    virtual std::string getAPI(std::string exchange);
+
+    virtual std::string getSecret(std::string exchange);
+
+    virtual void genConfig();
+
+    virtual std::vector<std::string> getPositions(std::string exchange);
 };
 
-int setupConfig();
-int initConfig(std::string ipath);
-nlohmann::json readConfig(std::string cpath);
+int setupConfig(std::string cfgLoc);
 
+int initConfig(std::string ipath);
+
+nlohmann::json readConfig(std::string cpath);
 
 
 #endif //BITGRINDER_CONFIG_H

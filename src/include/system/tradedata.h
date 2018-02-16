@@ -10,8 +10,6 @@
 #ifndef BITGRINDER_TRADEDATA_H
 #define BITGRINDER_TRADEDATA_H
 
-#endif //BITGRINDER_TRADEDATA_H
-
 class Ticker {
 public:
     struct windowVitals {
@@ -39,7 +37,7 @@ public:
         float closeRate;
         float periodMin;
         float periodMax;
-        std::vector<tradeData> individualTX;
+        std::vector <tradeData> individualTX;
     } fullPeriod;
 
     struct currentPeriod {
@@ -51,22 +49,30 @@ public:
         float closeRate{};
         float periodMin{};
         float periodMax{};
-        std::vector<tradeData> individualTX{};
+        std::vector <tradeData> individualTX{};
     } partPeriod;
 
 private:
     std::string cPair;
     std::string eName;
-bool updActive = false;
+    bool updActive = false;
 public:
-    std::vector<tradePeriod> PeriodTX;
+    std::vector <tradePeriod> PeriodTX;
+
     Ticker(std::string, std::string);
+
     ~Ticker();
+
     virtual int ReceiveTX();
+
     virtual int PushCurrent(int time, int txid, std::string type, float rate, float amount, float total);
-virtual void initThread();
-virtual void endThread();
-virtual void updateThread(Ticker *tickClass);
+
+    virtual void initThread();
+
+    virtual void endThread();
+
+    virtual void updateThread(Ticker *tickClass);
 };
 
 
+#endif //BITGRINDER_TRADEDATA_H
