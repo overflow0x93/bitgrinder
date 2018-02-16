@@ -25,9 +25,6 @@ void signalHandler(int signum) {
 
 int init(std::string path) {
     configFile = readConfig(path);
-    //config = path + "data/config";
-    //std::cout << config << "\r\n";
-    //if(exists(config))configFile = readJsonBinary(config); 
 //    GateIO gate("B5738462-1EB0-449E-AEEC-3F6C1D7DA0DA",
 //                "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
     GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
@@ -35,20 +32,26 @@ int init(std::string path) {
     std::cout << "API: " << configFile["Exchange"]["gateio"]["Account"]["API"].dump() << "\r\n";
     std::cout << "Positions in config: " << configFile["Exchange"]["gateio"]["Position"].size() << " : ";
 
-    //for (auto cpos: configFile["Exchange"]["gateio"]["Position"].size())
-    int nCnt = 0;
-    while (nCnt < configFile["Exchange"]["gateio"]["Position"].size())
+    for (auto cpos: configFile["Exchange"]["gateio"]["Position"])
     {
-        std::cout << configFile["Exchange"]["gateio"]["Position"][nCnt]["Pair"].dump() << " "; //.dump() << " ";
-        //std::cout << ["Pair"].dump() << " ";
-        nCnt++;
+        std::cout << cpos["Pair"].dump() << " ";
+        std::string pairNameToAdd = cpos["Pair"].dump();
+        std::replace(pairNameToAdd.begin(), pairNameToAdd.end(), '"', ' ');
+        pairNameToAdd.erase(std::remove(pairNameToAdd.begin(), pairNameToAdd.end(), ' '), pairNameToAdd.end());
+
+        gate.gatePositions.PushPosition(pairNameToAdd, 0.00004266, 0.98, 0.002, 0.0, 1.0, false, false);
     }
     std::cout << "\r\n";
     std::cout << "Positions: " << gate.gatePositions.allPositions.size() << " : ";
     for (auto pos: gate.gatePositions.allPositions) // element will be a copy of the current array element
     {
         std::cout << pos.pair << " ";
-        gate.gTickers.push_back(Ticker(pos.pair, "gateio"));
+        Ticker newTicker = Ticker(pos.pair, "gateio");
+        // Add other details here
+        newTicker.vitals.currencyPair = pos.pair;
+        gate.gTickers.push_back(newTicker);
+
+        //gate.gTickers.push_back(Ticker(pos.pair, "gateio"));
         //Ticker gVenEth("ven_eth", "gateio");
         //add ticker to gateio ticker vector
     }
@@ -57,6 +60,7 @@ int init(std::string path) {
     for (auto ticks: gate.gTickers) // element will be a$
     {
         std::cout << ticks.vitals.currencyPair << " ";
+        //Find out length of tickers; fill with initial data.
     }
     std::cout << "\r\n";
 

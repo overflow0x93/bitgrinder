@@ -26,7 +26,7 @@ positionManager::positionManager(void) {
     positionManager();
 */
     std::vector<basePosition> allPositions;
-    PushPosition();
+    //PushPosition();
 
 }
 
