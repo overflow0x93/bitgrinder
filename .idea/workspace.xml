@@ -14,11 +14,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe0ecadd-4355-4c0c-9d76-e50bf5c99226" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/bin/bitgrinder" afterPath="$PROJECT_DIR$/bin/bitgrinder" />
-      <change beforePath="$PROJECT_DIR$/bin/console" afterPath="$PROJECT_DIR$/bin/console" />
-      <change beforePath="$PROJECT_DIR$/src/system/data.cpp" afterPath="$PROJECT_DIR$/src/system/data.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -304,12 +300,20 @@
       <updated>1518330823131</updated>
       <workItem from="1518330827822" duration="66000" />
       <workItem from="1518330937560" duration="44441000" />
-      <workItem from="1518911795916" duration="1388000" />
+      <workItem from="1518911795916" duration="1455000" />
     </task>
+    <task id="LOCAL-00001" summary="CMake Update">
+      <created>1518913247665</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1518913247665</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45895000" />
+    <option name="totallyTimeSpent" value="45962000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="719" extended-state="6" />
@@ -340,6 +344,12 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="CMake Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="CMake Update" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
