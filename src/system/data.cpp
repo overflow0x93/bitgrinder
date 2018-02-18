@@ -1,51 +1,45 @@
 #include "../include/system/data.h"
 
-std::vector<nlohmann::json> jsonToVector(nlohmann::json jsonInput)
-{
-	std::vector<nlohmann::json> vToReturn;
-	return vToReturn;
+std::vector<nlohmann::json> jsonToVector(nlohmann::json jsonInput) {
+    std::vector<nlohmann::json> vToReturn;
+    return vToReturn;
 }
 
-std::vector<nlohmann::json> appendJsonDataVector(std::vector<nlohmann::json> vectorToAppend, nlohmann::json jsonToAdd)
-{
-	int amtToAppend = jsonToAdd["data"].size();
-	int count = 0;
-	while (count < amtToAppend)
-	{
-		vectorToAppend.push_back(jsonToAdd["data"][count]);
-	}
-	return vectorToAppend;
+std::vector<nlohmann::json> appendJsonDataVector(std::vector<nlohmann::json> vectorToAppend, nlohmann::json jsonToAdd) {
+    int amtToAppend = jsonToAdd["data"].size();
+    int count = 0;
+    while (count < amtToAppend) {
+        vectorToAppend.push_back(jsonToAdd["data"][count]);
+        ++amtToAppend;
+    }
+    return vectorToAppend;
 }
 
-nlohmann::json appendJsonData(nlohmann::json jsonToAppend, nlohmann::json jsonToAdd)
-{
-	int amtToAppend = jsonToAdd["data"].size();
-	int count = 0;
-	while (count < amtToAppend)
-	{
-		jsonToAppend["data"].push_back(jsonToAdd["data"][count]);
-		amtToAppend++;
-	}
-	return jsonToAppend;
+nlohmann::json appendJsonData(nlohmann::json jsonToAppend, nlohmann::json jsonToAdd) {
+    int amtToAppend = jsonToAdd["data"].size();
+    int count = 0;
+    while (count < amtToAppend) {
+        jsonToAppend["data"].push_back(jsonToAdd["data"][count]);
+        amtToAppend++;
+    }
+    return jsonToAppend;
 }
 
-std::vector<nlohmann::json> vecSortByKey(nlohmann::json jsonInput, std::string keyname, enum varType varTypeToSort)
-{
-	// Agnostic sorting of json
-	std::vector<nlohmann::json> vToReturn;
+std::vector<nlohmann::json> vecSortByKey(nlohmann::json jsonInput, std::string keyname, enum varType varTypeToSort) {
+    // Agnostic sorting of json
+    std::vector<nlohmann::json> vToReturn;
 
-	switch (varTypeToSort)
-	{
-		case vFLOAT:
-			break;
-		case vINT:
-			break;
-		case vSTRING:
-			break;
-		default:
-			return vToReturn;
-	}
-	return vToReturn;
+    switch (varTypeToSort) {
+        case vFLOAT:
+            break;
+        case vINT:
+            break;
+        case vSTRING:
+            break;
+        default:
+            return vToReturn;
+    }
+    return vToReturn;
 }
 
 nlohmann::json readJsonBinary(std::string targetFile) {
