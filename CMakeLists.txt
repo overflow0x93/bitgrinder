@@ -2,9 +2,120 @@ cmake_minimum_required(VERSION 3.9)
 project(bitgrinder)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -pthread")
 
-add_custom_target(bitgrinder COMMAND make -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+include_directories(${bitgrinder_SOURCE_DIR}/src)
+include_directories(${bitgrinder_SOURCE_DIR}/src/include)
+include_directories(${bitgrinder_SOURCE_DIR}/src/include/system)
+include_directories(${bitgrinder_SOURCE_DIR}/src/include/exchange)
+include_directories(${bitgrinder_SOURCE_DIR}/src/include/math)
 
-add_custom_target(console COMMAND make console -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+find_package(Boost)
+IF (Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIR})
+endif ()
 
-add_custom_target(monitor COMMAND make monitor -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+add_executable(bitgrinder
+        src/exchange/apiscrape.cpp
+        src/exchange/exchange.cpp
+        src/exchange/gateio.cpp
+        src/exchange/position.cpp
+        src/include/exchange/apiscrape.h
+        src/include/exchange/exchange.h
+        src/include/exchange/gateio.h
+        src/include/exchange/position.h
+        src/include/math/analysis.h
+        src/include/system/config.h
+        src/include/system/conparse.h
+        src/include/system/data.h
+        src/include/system/json.hpp
+        src/include/system/systatus.h
+        src/include/system/tinyfsm.hpp
+        src/include/system/tradedata.h
+        src/include/bitgrinder.h
+        src/include/btgmonitor.h
+        src/include/console.h
+        src/math/analysis.cpp
+        src/system/config.cpp
+        src/system/conparse.cpp
+        src/system/data.cpp
+        src/system/systatus.c
+        src/system/tradedata.cpp
+        src/bitgrinder.cpp
+        src/btgmonitor.cpp
+        src/console.cpp
+        makefile
+        readme.md)
+
+add_executable(monitor
+        src/exchange/apiscrape.cpp
+        src/exchange/exchange.cpp
+        src/exchange/gateio.cpp
+        src/exchange/position.cpp
+        src/include/exchange/apiscrape.h
+        src/include/exchange/exchange.h
+        src/include/exchange/gateio.h
+        src/include/exchange/position.h
+        src/include/math/analysis.h
+        src/include/system/config.h
+        src/include/system/conparse.h
+        src/include/system/data.h
+        src/include/system/json.hpp
+        src/include/system/systatus.h
+        src/include/system/tinyfsm.hpp
+        src/include/system/tradedata.h
+        src/include/bitgrinder.h
+        src/include/btgmonitor.h
+        src/include/console.h
+        src/math/analysis.cpp
+        src/system/config.cpp
+        src/system/conparse.cpp
+        src/system/data.cpp
+        src/system/systatus.c
+        src/system/tradedata.cpp
+        src/bitgrinder.cpp
+        src/btgmonitor.cpp
+        src/console.cpp
+        makefile
+        readme.md)
+
+add_executable(console
+        src/exchange/apiscrape.cpp
+        src/exchange/exchange.cpp
+        src/exchange/gateio.cpp
+        src/exchange/position.cpp
+        src/include/exchange/apiscrape.h
+        src/include/exchange/exchange.h
+        src/include/exchange/gateio.h
+        src/include/exchange/position.h
+        src/include/math/analysis.h
+        src/include/system/config.h
+        src/include/system/conparse.h
+        src/include/system/data.h
+        src/include/system/json.hpp
+        src/include/system/systatus.h
+        src/include/system/tinyfsm.hpp
+        src/include/system/tradedata.h
+        src/include/bitgrinder.h
+        src/include/btgmonitor.h
+        src/include/console.h
+        src/math/analysis.cpp
+        src/system/config.cpp
+        src/system/conparse.cpp
+        src/system/data.cpp
+        src/system/systatus.c
+        src/system/tradedata.cpp
+        src/bitgrinder.cpp
+        src/btgmonitor.cpp
+        src/console.cpp
+        makefile
+        readme.md)
+
+#FILE (GLOB_RECURSE clion_all_headers ${PROJECT_SOURCE_DIR}/src/include/*.h)
+#ADD_CUSTOM_TARGET(all_clion SOURCES ${clion_all_headers}         )
+add_custom_target(bitgrinder_make COMMAND make -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+
+add_custom_target(console_make COMMAND make console -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+
+add_custom_target(monitor_make COMMAND make monitor -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+target_Link_Libraries(bitgrinder "-lpthread -stdlib=libc++")
