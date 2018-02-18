@@ -4,12 +4,14 @@
 #include "./system/config.h"
 //#include "./system/data.h"
 #include <csignal>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <string>
 #include <thread>
 //#include <fstream>
 
 int init();
+
 void update();
+
 int console(GateIO masterExchange);

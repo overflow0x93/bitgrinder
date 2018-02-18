@@ -3,11 +3,11 @@
 //
 #include "../include/system/config.h"
 
-std::string cfgLoc = "";
+std::string cfgLoc;
 nlohmann::json cfgFile;
 
 inline bool exists(const std::string &name) {
-    struct stat buffer;
+    struct stat buffer{};
     return (stat(name.c_str(), &buffer) == 0);
 }
 
@@ -41,7 +41,7 @@ int setupConfig(std::string cfgLoc) {
     nlohmann::json workingJson, tempJson;
     std::string conFile = cfgLoc;
     //std::string conFile = "./bin/data/config";
-    std::string input = "";
+    std::string input;
     {
         workingJson["Application"]["Config"]["TradeData"] = "./data/exchange/";
         std::cout << "Enter log location [./data/logs/] : ";
@@ -83,9 +83,7 @@ int setupConfig(std::string cfgLoc) {
         std::cout << "Do you have any current positions [Y]/N ? : ";
         std::getline(std::cin, input);
         int count = 0;
-        if (input.empty() || input == "Y" || input == "y" || input == "Yes" || input == "YES" ||
-            input == "yes") { bMorePos = true;}
-        else { bMorePos = false; }
+        bMorePos = input.empty() || input == "Y" || input == "y" || input == "Yes" || input == "YES" || input == "yes";
         while (bMorePos) {
             std::cout << "Enter pair you traded < example: eos_eth > : ";
             std::getline(std::cin, input);

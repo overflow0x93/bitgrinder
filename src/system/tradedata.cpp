@@ -1,9 +1,11 @@
 //
 // Created by overflow on 2/11/18.
 //
+#include <utility>
+
 #include "../include/system/tradedata.h"
 
-Ticker::Ticker(std::string pair, std::string exchange) : cPair{pair}, eName{exchange} {
+Ticker::Ticker(std::string pair, std::string exchange) : cPair{std::move(pair)}, eName{std::move(exchange)} {
     struct windowVitals vitals;
     struct tradeData tx;
     struct tradePeriod fullPeriod;

@@ -4,7 +4,7 @@
 
 #include "../include/exchange/position.h"
 
-positionManager::positionManager(void) {
+positionManager::positionManager() {
     // Basic Gate.io functions init
     struct basePosition tradePosition = {};
 

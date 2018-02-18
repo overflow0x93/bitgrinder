@@ -1,8 +1,10 @@
+#include <utility>
+
 #include "../include/exchange/gateio.h"
 
 std::string buffer;
 
-GateIO::GateIO(std::string akey, std::string skey) : api_key{akey}, api_secret{skey} {
+GateIO::GateIO(std::string akey, std::string skey) : api_key{std::move(akey)}, api_secret{std::move(skey)} {
     // Basic Gate.io functions init
     struct pairs getPairs;
     struct marketinfo getMarketInfo;
@@ -47,7 +49,7 @@ nlohmann::json GateIO::sendRequest(std::string url, std::string params) {
     nlohmann::json jsonResult = {{"result", "fail"}};
 
     if (curl) {
-        struct curl_slist *chunk = NULL;
+        struct curl_slist *chunk = nullptr;
         std::string tURL = api_url;
         //tURL.append("");
         tURL.append(url);
@@ -65,7 +67,7 @@ nlohmann::json GateIO::sendRequest(std::string url, std::string params) {
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outBuffer);
         chunk = curl_slist_append(chunk, "Accept:");
 
-        if (params != "") {
+        if (!params.empty()) { // if (params != "") {
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, parameters.c_str());
             curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, parameters.length());
             parameters = jsonToSign(params);
@@ -89,7 +91,7 @@ nlohmann::json GateIO::sendRequest(std::string url, std::string params) {
                     " | openssl dgst -sha512 -mac HMAC -macopt key:3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc | cut -c 10-");
 
             // Clean up output from system call
-            std::array<char, 128> buffer;
+            std::array<char, 128> buffer{};
             std::string result;
             std::shared_ptr<FILE> pipe(popen(sysCmd.c_str(), "r"), pclose);
             if (!pipe) throw std::runtime_error("popen() failed!");
@@ -98,7 +100,7 @@ nlohmann::json GateIO::sendRequest(std::string url, std::string params) {
                     result += buffer.data();
             }
             // Create  header
-            std::string signHeader = "";
+            std::string signHeader;
             signHeader.append("SIGN: ");
             result.erase(std::remove(result.begin(), result.end(), '\n'), result.end());
             result.erase(std::remove(result.begin(), result.end(), '\r'), result.end());
@@ -148,7 +150,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 }
 
 std::string jsonToSign(nlohmann::json params) {
-    std::string signValue = "";
+    std::string signValue;
 
     //std::cout << params.dump() << "\r\n";
     signValue = params.dump();

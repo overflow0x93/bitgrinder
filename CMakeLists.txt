@@ -14,6 +14,17 @@ find_package(Boost)
 IF (Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIR})
 endif ()
+IF (NOT Boost_FOUND)
+    message(WARNING "Boost not found.")
+endif ()
+
+find_package(CURL)
+if (NOT ${CURL_FOUND})
+    message(WARNING "Could not find libcURL.")
+endif ()
+IF (CURL_FOUND)
+    include_directories(${CURL_INCLUDE_DIR})
+endif ()
 
 add_executable(bitgrinder
         src/exchange/apiscrape.cpp
@@ -33,8 +44,6 @@ add_executable(bitgrinder
         src/include/system/tinyfsm.hpp
         src/include/system/tradedata.h
         src/include/bitgrinder.h
-        src/include/btgmonitor.h
-        src/include/console.h
         src/math/analysis.cpp
         src/system/config.cpp
         src/system/conparse.cpp
@@ -42,8 +51,6 @@ add_executable(bitgrinder
         src/system/systatus.c
         src/system/tradedata.cpp
         src/bitgrinder.cpp
-        src/btgmonitor.cpp
-        src/console.cpp
         makefile
         readme.md)
 
@@ -64,7 +71,6 @@ add_executable(monitor
         src/include/system/systatus.h
         src/include/system/tinyfsm.hpp
         src/include/system/tradedata.h
-        src/include/bitgrinder.h
         src/include/btgmonitor.h
         src/include/console.h
         src/math/analysis.cpp
@@ -73,9 +79,7 @@ add_executable(monitor
         src/system/data.cpp
         src/system/systatus.c
         src/system/tradedata.cpp
-        src/bitgrinder.cpp
         src/btgmonitor.cpp
-        src/console.cpp
         makefile
         readme.md)
 
@@ -96,8 +100,6 @@ add_executable(console
         src/include/system/systatus.h
         src/include/system/tinyfsm.hpp
         src/include/system/tradedata.h
-        src/include/bitgrinder.h
-        src/include/btgmonitor.h
         src/include/console.h
         src/math/analysis.cpp
         src/system/config.cpp
@@ -105,17 +107,13 @@ add_executable(console
         src/system/data.cpp
         src/system/systatus.c
         src/system/tradedata.cpp
-        src/bitgrinder.cpp
-        src/btgmonitor.cpp
         src/console.cpp
         makefile
         readme.md)
 
-#FILE (GLOB_RECURSE clion_all_headers ${PROJECT_SOURCE_DIR}/src/include/*.h)
-#ADD_CUSTOM_TARGET(all_clion SOURCES ${clion_all_headers}         )
 add_custom_target(bitgrinder_make COMMAND make -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
 
 add_custom_target(console_make COMMAND make console -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
 
 add_custom_target(monitor_make COMMAND make monitor -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
-target_Link_Libraries(bitgrinder "-lpthread -stdlib=libc++")
+target_Link_Libraries(bitgrinder "-lcrypto -lcurl -lstdc++ -lpthread -lboost_program_options -lboost_filesystem -lboost_system -stdlib=libc++")

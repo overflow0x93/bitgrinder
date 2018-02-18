@@ -4,11 +4,11 @@
 #include "./include/console.h"
 
 std::string bitgver = "0.0.1.26";
-std::string binpath = "";
+std::string binpath;
 nlohmann::json configFile;
 
 inline bool exists(const std::string &name) {
-    struct stat buffer;
+    struct stat buffer{};
     return (stat(name.c_str(), &buffer) == 0);
 }
 

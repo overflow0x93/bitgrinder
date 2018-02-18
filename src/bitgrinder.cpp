@@ -1,6 +1,5 @@
 #include "./include/bitgrinder.h"
 
-
 bool updater = false;
 std::string bitgver = "0.0.1.26";
 nlohmann::json configFile;
@@ -23,6 +22,7 @@ void signalHandler(int signum) {
     exit(signum);
 }
 
+
 int init(std::string path) {
     configFile = readConfig(path);
 //    GateIO gate("B5738462-1EB0-449E-AEEC-3F6C1D7DA0DA",
@@ -33,8 +33,7 @@ int init(std::string path) {
     std::cout << "API: " << configFile["Exchange"]["gateio"]["Account"]["API"].dump() << "\r\n";
     std::cout << "Positions in config: " << configFile["Exchange"]["gateio"]["Position"].size() << " : ";
 
-    for (auto cpos: configFile["Exchange"]["gateio"]["Position"])
-    {
+    for (auto cpos: configFile["Exchange"]["gateio"]["Position"]) {
         std::cout << cpos["Pair"].dump() << " ";
         std::string pairNameToAdd = cpos["Pair"].dump();
         std::replace(pairNameToAdd.begin(), pairNameToAdd.end(), '"', ' ');
