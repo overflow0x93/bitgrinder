@@ -53,10 +53,35 @@ int init(std::string path) {
     }
     std::cout << "\r\n";
     std::cout << "Tickers: " << gate.gTickers.size() << " : ";
-    for (auto ticks: gate.gTickers) // element will be a$
+    for (auto ticks: gate.gTickers)
     {
-        std::cout << ticks.vitals.currencyPair << " ";
         //Find out length of tickers; fill with initial data.
+        std::string tradeURL = gate.getAllTradeHistory.URL;
+        tradeURL.append(ticks.vitals.currencyPair);
+        tradeURL.append("/");
+        std::string txURL = tradeURL;
+        txURL.append("40000000"); // Roughly halfway through jan
+        int beginTradeID = 40000000;
+        nlohmann::json jsonOutput;
+        jsonOutput = gate.sendRequest(txURL.c_str(), gate.getAllTradeHistory.params);
+        //std::cout << jsonOutput.dump() << "\r\n";
+        int count;
+        //while (jsonOutput["data"].size() > 0 && jsonOutput["data"] != NULL) {
+        count = 0;
+        while (count < jsonOutput["data"].size()) {
+            //gate.gatePositions.tradePosition.pair = ticks.vitals.currencyPair;
+            //gate.gatePositions.tradePosition.rate = jsonOutput["data"][count]["rate"];
+            //gate.gatePositions.tradePosition.amount = jsonOutput["data"][count]["amount"];
+            // Error must be numbers, but are read as strings
+            ticks.PushCurrent(1234, 40000000, jsonOutput["data"][count]["type"], 0.00004266, 244.5, 0.988);
+            //std::cout << ticks.partPeriod.individualTX[count].rate;
+
+
+            ++count;
+        }  // end push records to binary
+        //} // end read records to push
+        // init complete
+        std::cout << ticks.vitals.currencyPair << " " << ticks.partPeriod.individualTX.size() << " ";
     }
     std::cout << "\r\n";
 

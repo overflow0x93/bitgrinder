@@ -26,6 +26,7 @@ GateIO::GateIO(std::string akey, std::string skey) : api_key{std::move(akey)}, a
     struct athistory getAllTradeHistory;
     struct tjson jTradeHistory;
     struct withdraw doWithdraw;
+
     positionManager gatePositions;
 //    gatePositions.initPosition();
     gatePositions.allPositions.push_back(gatePositions.tradePosition);
@@ -165,17 +166,4 @@ std::string jsonToSign(nlohmann::json params) {
 
     //std::cout << signValue << "\r\n";
     return signValue;
-}
-
-void removeSpaces(char *str) {
-    // To keep track of non-space character count
-    int count = 0;
-
-    // Traverse the given string. If current character
-    // is not space, then place it at index 'count++'
-    for (int i = 0; str[i]; i++)
-        if (str[i] != ' ')
-            str[count++] = str[i]; // here count is
-    // incremented
-    str[count] = '\0';
 }
