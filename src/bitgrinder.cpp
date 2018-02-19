@@ -9,6 +9,13 @@ inline bool exists(const std::string &name) {
     return (stat(name.c_str(), &buffer) == 0);
 }
 
+long int unix_timestamp()
+{
+    time_t t = std::time(0);
+    long int now = static_cast<long int> (t);
+    return now;
+}
+
 void signalHandler(int signum) {
     std::cout << "\r\n\r\nInterrupt signal (" << signum << ") received.\n";
     std::cout << "Shutting down...\r\n";
@@ -63,58 +70,89 @@ int init(std::string path) {
     }
     std::cout << "\r\n";
 
-std::string sTS,sTX,sRATE,sAMT,sTOT;
-int cTS,cTX;
-float cRATE,cAMT,cTOT;
+    std::string sTS,sTX,sRATE,sAMT,sTOT,tradeURL;
+    int cTS,cTX;
+    float cRATE,cAMT,cTOT;
+    int lastTS;
     std::cout << "Tickers: " << gate.gTickers.size() << " : ";
     for (auto ticks: gate.gTickers)
     {
+        bool stuck = false;
         //Find out length of tickers; fill with initial data.
-        std::string tradeURL = gate.getAllTradeHistory.URL;
+        tradeURL = gate.getAllTradeHistory.URL;
         tradeURL.append(ticks.vitals.currencyPair);
         tradeURL.append("/");
         std::string txURL = tradeURL;
         txURL.append(sInitTX); // Roughly halfway through jan
-        int beginTradeID = initTX;
+        int cTXID = initTX;
         nlohmann::json jsonOutput;
         jsonOutput = gate.sendRequest(txURL.c_str(), gate.getAllTradeHistory.params);
+	if(jsonOutput.empty())std::cout<<"Empty JSON.\r\n";
         //std::cout << jsonOutput.dump() << "\r\n";
         int count;
         //while (jsonOutput["data"].size() > 0 && jsonOutput["data"] != NULL) {
-        count = 0;
-        while (count < jsonOutput["data"].size()) {
-    		sTS = jsonOutput["data"][count]["timestamp"].dump();
-        	std::replace(sTS.begin(), sTS.end(), '"', ' ');
-        	sTS.erase(std::remove(sTS.begin(), sTS.end(), ' '), sTS.end());
-		cTS = std::stoi(sTS);
-    		sTX = jsonOutput["data"][count]["tradeID"].dump();
-        	std::replace(sTX.begin(), sTX.end(), '"', ' ');
-        	sTX.erase(std::remove(sTX.begin(), sTX.end(), ' '), sTX.end());
-		cTX = std::stoi(sTX);
-    		sRATE = jsonOutput["data"][count]["rate"].dump();
-        	std::replace(sRATE.begin(), sRATE.end(), '"', ' ');
-        	sRATE.erase(std::remove(sRATE.begin(), sRATE.end(), ' '), sRATE.end());
-		cRATE = std::stof(sRATE);
-    		sAMT = jsonOutput["data"][count]["amount"].dump();
-        	std::replace(sAMT.begin(), sAMT.end(), '"', ' ');
-        	sTX.erase(std::remove(sAMT.begin(), sAMT.end(), ' '), sAMT.end());
-		cAMT = std::stof(sAMT);
-    		sTOT = jsonOutput["data"][count]["total"].dump();
-        	std::replace(sTOT.begin(), sTOT.end(), '"', ' ');
-        	sTX.erase(std::remove(sTOT.begin(), sTOT.end(), ' '), sTOT.end());
-		cTOT = std::stof(sTOT);
+//__int64 now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+auto now = std::chrono::high_resolution_clock::now();
+	long int ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();        
+	//std::chrono::milliseconds ms = std::chrono::duration_cast< std::chrono::milliseconds > (
+    	//std::chrono::system_clock::now().time_since_epoch());        
+        sTS = jsonOutput["data"][0]["timestamp"].dump();
+        std::replace(sTS.begin(), sTS.end(), '"', ' ');
+        sTS.erase(std::remove(sTS.begin(), sTS.end(), ' '), sTS.end());
+	cTS = std::stoi(sTS); lastTS = cTS;
+	
+	  while ((ms/1000) >= cTS+(5*60) && !stuck){ // As long as entry is at least 5 minutes ago
+//		system("clear");
+//		std::cout << "Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
+	 	count = 0;
+        	tradeURL = gate.getAllTradeHistory.URL;
+       		tradeURL.append(ticks.vitals.currencyPair);
+        	tradeURL.append("/");
+        	std::string txURL = tradeURL;
+        	txURL.append(std::to_string(cTXID)); // Roughly halfway through jan
+        	nlohmann::json jsonOutput;
+        	jsonOutput = gate.sendRequest(txURL.c_str(), gate.getAllTradeHistory.params);
+		if(jsonOutput.empty())std::cout<<"Empty JSON.\r\n";
 
-            
-            //gate.gatePositions.tradePosition.rate = jsonOutput["data"][count]["rate"];
-            //gate.gatePositions.tradePosition.amount = jsonOutput["data"][count]["amount"];
-            // Error must be numbers, but are read as strings
-            ticks.PushCurrent(cTS, cTX, jsonOutput["data"][count]["type"], cRATE, cAMT, cTOT);
-            std::cout << ticks.partPeriod.individualTX[count].rate << " ";
+          	while (count < jsonOutput["data"].size() || stuck) {
 
+    		  sTS = jsonOutput["data"][count]["timestamp"].dump();
+        	  std::replace(sTS.begin(), sTS.end(), '"', ' ');
+        	  sTS.erase(std::remove(sTS.begin(), sTS.end(), ' '), sTS.end());
+		  cTS = std::stoi(sTS); lastTS = cTS;
+		  if(lastTS == cTS)stuck==true;;
+		  lastTS = cTS;
+    		  sTX = jsonOutput["data"][count]["tradeID"].dump();
+        	  std::replace(sTX.begin(), sTX.end(), '"', ' ');
+        	  sTX.erase(std::remove(sTX.begin(), sTX.end(), ' '), sTX.end());
+		  cTX = std::stoi(sTX);
+		  cTXID = cTX;
+    		  sRATE = jsonOutput["data"][count]["rate"].dump();
+        	  std::replace(sRATE.begin(), sRATE.end(), '"', ' ');
+        	  sRATE.erase(std::remove(sRATE.begin(), sRATE.end(), ' '), sRATE.end());
+		  cRATE = std::stof(sRATE);
+    		  sAMT = jsonOutput["data"][count]["amount"].dump();
+        	  std::replace(sAMT.begin(), sAMT.end(), '"', ' ');
+        	  sAMT.erase(std::remove(sAMT.begin(), sAMT.end(), ' '), sAMT.end());
+		  cAMT = std::stof(sAMT);
+    		  sTOT = jsonOutput["data"][count]["total"].dump();
+        	  std::replace(sTOT.begin(), sTOT.end(), '"', ' ');
+        	  sTX.erase(std::remove(sTOT.begin(), sTOT.end(), ' '), sTOT.end());
+		  cTOT = std::stof(sTOT);
+		  //std::cout << cTOT << " ";
+            	  // Must be numbers, but are read as strings
+		  //if(cTOT >= minValue)
+            	  ticks.PushCurrent(cTS, cTX, jsonOutput["data"][count]["type"], cRATE, cAMT, cTOT);
+//		system("clear");
+//		std::cout << "Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
 
-            ++count;
-        }  // end push records to binary
-        //} // end read records to push
+	            //std::cout << ticks.partPeriod.individualTX[count].rate << " ";
+
+          	  ++count;
+          	}  // end push records to binary
+	  cTXID += 1;
+	jsonOutput = {};
+	}
         // init complete
         std::cout << ticks.vitals.currencyPair << " " << ticks.partPeriod.individualTX.size() << " ";
     }
