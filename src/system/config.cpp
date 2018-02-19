@@ -58,7 +58,7 @@ int setupConfig(std::string cfgLoc) {
     {
 
 
-        std::cout << "Enter Gate.IO API Key: : ";
+        std::cout << "Enter Gate.IO API Key : ";
         std::getline(std::cin, input);
         if (input.empty()) {
             workingJson["Exchange"]["gateio"]["Account"]["API"] = "";
@@ -66,7 +66,7 @@ int setupConfig(std::string cfgLoc) {
             workingJson["Exchange"]["gateio"]["Account"]["API"] = input;
         }
 
-        std::cout << "Enter Gate.IO API Secret Key: : ";
+        std::cout << "Enter Gate.IO API Secret Key : ";
         std::getline(std::cin, input);
         if (input.empty()) {
             workingJson["Exchange"]["gateio"]["Account"]["KEY"] = "";
@@ -77,6 +77,14 @@ int setupConfig(std::string cfgLoc) {
         workingJson["Exchange"]["gateio"]["Config"]["UpdateFreq"] = 10;
         workingJson["Exchange"]["gateio"]["Trade"]["Exclude"]["jnt"] = true;
         workingJson["Exchange"]["gateio"]["Trade"]["Fees"] = 0.002;
+
+	std::cout << "Enter Gate.IO Starting TX ID [40000000] : ";
+        std::getline(std::cin, input);
+        if (input.empty()) {
+            workingJson["Exchange"]["gateio"]["Config"]["iTXID"] = "40000000";
+        } else {
+            workingJson["Exchange"]["gateio"]["Config"]["iTXID"] = input;
+        }
 
 
         bool bMorePos = false;

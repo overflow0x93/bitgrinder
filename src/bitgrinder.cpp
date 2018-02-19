@@ -32,6 +32,14 @@ int init(std::string path) {
     //gateIOp = &gate;
     std::cout << "API: " << configFile["Exchange"]["gateio"]["Account"]["API"].dump() << "\r\n";
     std::cout << "Positions in config: " << configFile["Exchange"]["gateio"]["Position"].size() << " : ";
+    std::cout << "Starting tx ID: " << configFile["Exchange"]["gateio"]["Config"]["iTXID"].dump() << "\r\n";
+
+// Format starting TXID    
+    std::string sInitTX = configFile["Exchange"]["gateio"]["Config"]["iTXID"].dump();
+        std::replace(sInitTX.begin(), sInitTX.end(), '"', ' ');
+        sInitTX.erase(std::remove(sInitTX.begin(), sInitTX.end(), ' '), sInitTX.end());
+	int initTX = std::stoi(sInitTX);
+
 
     for (auto cpos: configFile["Exchange"]["gateio"]["Position"]) {
         std::cout << cpos["Pair"].dump() << " ";
@@ -43,6 +51,8 @@ int init(std::string path) {
     }
     std::cout << "\r\n";
     std::cout << "Positions: " << gate.gatePositions.allPositions.size() << " : ";
+
+
     for (auto pos: gate.gatePositions.allPositions) // element will be a copy of the current array element
     {
         std::cout << pos.pair << " ";
@@ -52,6 +62,10 @@ int init(std::string path) {
         gate.gTickers.push_back(newTicker);
     }
     std::cout << "\r\n";
+
+std::string sTS,sTX,sRATE,sAMT,sTOT;
+int cTS,cTX;
+float cRATE,cAMT,cTOT;
     std::cout << "Tickers: " << gate.gTickers.size() << " : ";
     for (auto ticks: gate.gTickers)
     {
@@ -60,8 +74,8 @@ int init(std::string path) {
         tradeURL.append(ticks.vitals.currencyPair);
         tradeURL.append("/");
         std::string txURL = tradeURL;
-        txURL.append("40000000"); // Roughly halfway through jan
-        int beginTradeID = 40000000;
+        txURL.append(sInitTX); // Roughly halfway through jan
+        int beginTradeID = initTX;
         nlohmann::json jsonOutput;
         jsonOutput = gate.sendRequest(txURL.c_str(), gate.getAllTradeHistory.params);
         //std::cout << jsonOutput.dump() << "\r\n";
@@ -69,12 +83,33 @@ int init(std::string path) {
         //while (jsonOutput["data"].size() > 0 && jsonOutput["data"] != NULL) {
         count = 0;
         while (count < jsonOutput["data"].size()) {
-            //gate.gatePositions.tradePosition.pair = ticks.vitals.currencyPair;
+    		sTS = jsonOutput["data"][count]["timestamp"].dump();
+        	std::replace(sTS.begin(), sTS.end(), '"', ' ');
+        	sTS.erase(std::remove(sTS.begin(), sTS.end(), ' '), sTS.end());
+		cTS = std::stoi(sTS);
+    		sTX = jsonOutput["data"][count]["tradeID"].dump();
+        	std::replace(sTX.begin(), sTX.end(), '"', ' ');
+        	sTX.erase(std::remove(sTX.begin(), sTX.end(), ' '), sTX.end());
+		cTX = std::stoi(sTX);
+    		sRATE = jsonOutput["data"][count]["rate"].dump();
+        	std::replace(sRATE.begin(), sRATE.end(), '"', ' ');
+        	sRATE.erase(std::remove(sRATE.begin(), sRATE.end(), ' '), sRATE.end());
+		cRATE = std::stof(sRATE);
+    		sAMT = jsonOutput["data"][count]["amount"].dump();
+        	std::replace(sAMT.begin(), sAMT.end(), '"', ' ');
+        	sTX.erase(std::remove(sAMT.begin(), sAMT.end(), ' '), sAMT.end());
+		cAMT = std::stof(sAMT);
+    		sTOT = jsonOutput["data"][count]["total"].dump();
+        	std::replace(sTOT.begin(), sTOT.end(), '"', ' ');
+        	sTX.erase(std::remove(sTOT.begin(), sTOT.end(), ' '), sTOT.end());
+		cTOT = std::stof(sTOT);
+
+            
             //gate.gatePositions.tradePosition.rate = jsonOutput["data"][count]["rate"];
             //gate.gatePositions.tradePosition.amount = jsonOutput["data"][count]["amount"];
             // Error must be numbers, but are read as strings
-            ticks.PushCurrent(1234, 40000000, jsonOutput["data"][count]["type"], 0.00004266, 244.5, 0.988);
-            //std::cout << ticks.partPeriod.individualTX[count].rate;
+            ticks.PushCurrent(cTS, cTX, jsonOutput["data"][count]["type"], cRATE, cAMT, cTOT);
+            std::cout << ticks.partPeriod.individualTX[count].rate << " ";
 
 
             ++count;
