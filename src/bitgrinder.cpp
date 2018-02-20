@@ -116,8 +116,8 @@ Debug::dBasicLog(INIT,INFO,outMsg);
         sTS.erase(std::remove(sTS.begin(), sTS.end(), ' '), sTS.end());
         cTS = std::stoi(sTS);
         lastTS = cTS;
-
-        while ((ms / 1000) >= cTS + (5 * 60) && !stuck) { // As long as entry is at least 5 minutes ago
+	int txp = 0;
+        while ((ms / 1000) >= cTS + (5 * 60) && txp <= 10) { // As long as entry is at least 5 minutes ago
 //		system("clear");
 //		std::cout << "Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
             count = 0;
@@ -130,8 +130,8 @@ Debug::dBasicLog(INIT,INFO,outMsg);
             jsonOutput = gate.sendRequest(txURL.c_str(), gate.getAllTradeHistory.params);
             if (jsonOutput.empty())std::cout << "Empty JSON.\r\n";
 
-            while (count < jsonOutput["data"].size() || stuck) {
-
+            while (count < jsonOutput["data"].size()) {
+		txp = 0;
                 sTS = jsonOutput["data"][count]["timestamp"].dump();
                 std::replace(sTS.begin(), sTS.end(), '"', ' ');
                 sTS.erase(std::remove(sTS.begin(), sTS.end(), ' '), sTS.end());
@@ -168,9 +168,9 @@ Debug::dBasicLog(INIT,INFO,outMsg);
 
                 ++count;
             }  // end push records to binary
-		std::cout << "[Debug] Next " << ticks.vitals.currencyPair << " batch...\r\n";
+	    ++txp;
+	    std::cout << "[Debug] Next " << ticks.vitals.currencyPair << " batch...\r\n";
             cTXID += 1;
-            jsonOutput = {};
         }
         std::cout << "[Debug] Next currency pair...\r\n";
 
