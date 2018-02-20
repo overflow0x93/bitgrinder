@@ -1,6 +1,10 @@
 #include "config.hpp"
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <string>
 #include <iostream>
 #include <fstream>
+#include <chrono>
+#include <sstream>
 
 #ifndef BITGRINDER_LOGGING_HPP
 #define BITGRINDER_LOGGING_HPP

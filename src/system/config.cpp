@@ -44,11 +44,11 @@ int setupConfig(std::string cfgLoc) {
     std::string input;
     {
         workingJson["Application"]["Config"]["TradeData"] = "data/exchange/";
-        std::cout << "Enter log location [data/logs/] : ";
+        std::cout << "Enter log location [/opt/bitgrinder/system/logs/] : ";
         std::string input;
         std::getline(std::cin, input);
         if (input.empty()) {
-            workingJson["Application"]["Config"]["Logs"] = "data/logs/";
+            workingJson["Application"]["Config"]["Logs"] = "/opt/bitgrinder/system/logs/";
         } else {
             workingJson["Application"]["Config"]["Logs"] = input;
         }
@@ -154,22 +154,32 @@ int setupConfig(std::string cfgLoc) {
 }
 
 int initConfig(std::string ipath) {
-
-    //std::string iconfig = ipath + "data/config";
-    std::cout << "initConfig : " << ipath << "\r\n";
+#ifdef DEBUG
+	std::cout << "[Debug] IN: initConfig(" << ipath << ");\r\n";
+#endif
     if (exists(ipath)) {
+#ifdef DEBUG
+	std::cout << "[Debug] exists(ipath) = true\r\n";
+#endif
         return 0;
     } else {
+#ifdef DEBUG
+	std::cout << "[Debug] exists(ipath) = false\r\n";
+    std::cout << "[Debug] CALL >> setupConfig(" << ipath << ");\r\n";
+#endif
         setupConfig(ipath);
-
     }
 
     return 0;
 }
 
 nlohmann::json readConfig(std::string cpath) {
-    std::cout << "Read path : " << cpath << "\r\n";
     std::string configpath = cpath + "data/config";
+#ifdef DEBUG
+	std::cout << "[Debug] IN: readConfig(" << cpath << ");\r\n";
+    std::cout << "[Debug] Config path = " << configpath << "\r\n\r\n";
+    std::cout << "[Debug] CALL >> initConfig(" << configpath << ");\r\n";
+#endif
     initConfig(configpath);
     nlohmann::json returnJson = readJsonBinary(configpath);
     return returnJson;

@@ -8,11 +8,14 @@ CXXFLAGS=-c -ggdb -DDEBUG
 LIBS = -lcurl -lstdc++ -lcrypto -pthread
 all: clean bitgrinder monitor console
 
-bitgrinder: bitgrinder.o gateio.o tradedata.o config.o position.o sysdata.o
-	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o ./bin/system/tradedata.o ./bin/system/config.o ./bin/exchange/position.o $(LIBS)
+bitgrinder: bitgrinder.o gateio.o tradedata.o config.o position.o sysdata.o logging.o
+	$(CXX) -o ./bin/bitgrinder ./bin/bitgrinder.o ./bin/exchange/gateio.o ./bin/system/sysdata.o ./bin/system/tradedata.o ./bin/system/config.o ./bin/exchange/position.o ./bin/system/logging.o $(LIBS)
 
-bitgrinder.o: sysdata.o gateio.o config.o position.o ./src/bitgrinder.cpp ./src/include/bitgrinder.hpp ./src/include/system/json.hpp ./src/include/system/data.hpp ./src/include/system/config.hpp
+bitgrinder.o: sysdata.o gateio.o config.o position.o logging.o ./src/bitgrinder.cpp ./src/include/bitgrinder.hpp ./src/include/system/json.hpp ./src/include/system/logging.hpp ./src/include/system/data.hpp ./src/include/system/config.hpp
 	$(CXX) $(CXXFLAGS) -o ./bin/bitgrinder.o ./src/bitgrinder.cpp $(LIBS)
+
+logging.o: config.o ./src/system/logging.cpp ./src/include/system/logging.hpp ./src/include/system/config.hpp
+	$(CXX) $(CXXFLAGS) -o ./bin/system/logging.o ./src/system/logging.cpp $(LIBS)
 
 config.o: sysdata.o ./src/system/config.cpp ./src/include/system/config.hpp ./src/include/system/json.hpp ./src/include/system/data.hpp
 	$(CXX) $(CXXFLAGS) -o ./bin/system/config.o ./src/system/config.cpp $(LIBS)

@@ -9,12 +9,6 @@ inline bool exists(const std::string &name) {
     return (stat(name.c_str(), &buffer) == 0);
 }
 
-long int unix_timestamp() {
-    time_t t = std::time(0);
-    long int now = static_cast<long int> (t);
-    return now;
-}
-
 void signalHandler(int signum) {
     std::cout << "\r\n\r\nInterrupt signal (" << signum << ") received.\n";
     std::cout << "Shutting down...\r\n";
@@ -36,7 +30,7 @@ int init(std::string path) {
     GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
                 configFile["Exchange"]["gateio"]["Account"]["KEY"].dump());
     //gateIOp = &gate;
-    //Debug::dBasicLog(INIT,INFO,"Test log");
+    Debug::dBasicLog(INIT,INFO,"Test log");
     std::cout << "API: " << configFile["Exchange"]["gateio"]["Account"]["API"].dump() << "\r\n";
     std::cout << "Positions in config: " << configFile["Exchange"]["gateio"]["Position"].size() << " : ";
     std::cout << "Starting tx ID: " << configFile["Exchange"]["gateio"]["Config"]["iTXID"].dump() << "\r\n";
@@ -145,7 +139,7 @@ int init(std::string path) {
                 //if(cTOT >= minValue)
                 ticks.PushCurrent(cTS, cTX, jsonOutput["data"][count]["type"], cRATE, cAMT, cTOT);
 #ifdef DEBUG
-                std::cout << "Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
+                std::cout << "[Debug] Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
 #endif
 
                 //std::cout << ticks.partPeriod.individualTX[count].rate << " ";
@@ -191,7 +185,9 @@ int main(int argc, char *argv[]) {
     int pos = aux.rfind('/');
     std::string path = aux.substr(0, pos + 1);
     std::string name = aux.substr(pos + 1);
-
+#ifdef DEBUG
+	std::cout << "[Debug] path = " << path << "\r\n";
+#endif
     if (init(path) == 0) {
         std::cout << "Initialized. \r\n";
 
