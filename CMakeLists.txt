@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.9)
 project(bitgrinder)
 
+# Set the output folder where your program will be created
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/src)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/src/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/src/bin)
+
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -pthread")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -std=gnu99")
 
 include_directories(${bitgrinder_SOURCE_DIR}/src)
 include_directories(${bitgrinder_SOURCE_DIR}/src/include)
@@ -20,7 +26,7 @@ endif ()
 
 find_package(CURL)
 if (NOT ${CURL_FOUND})
-    message(WARNING "Could not find libcURL.")
+    message(WARNING "libcURL not found.")
 endif ()
 IF (CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIR})
@@ -31,89 +37,43 @@ add_executable(bitgrinder
         src/exchange/exchange.cpp
         src/exchange/gateio.cpp
         src/exchange/position.cpp
-        src/include/exchange/apiscrape.h
-        src/include/exchange/exchange.h
-        src/include/exchange/gateio.h
-        src/include/exchange/position.h
-        src/include/math/analysis.h
-        src/include/system/config.h
-        src/include/system/conparse.h
-        src/include/system/data.h
+        src/include/exchange/apiscrape.hpp
+        src/include/exchange/exchange.hpp
+        src/include/exchange/gateio.hpp
+        src/include/exchange/position.hpp
+        src/include/math/analysis.hpp
+        src/include/system/config.hpp
+        src/include/system/conparse.hpp
+        src/include/system/data.hpp
         src/include/system/json.hpp
         src/include/system/systatus.h
         src/include/system/tinyfsm.hpp
-        src/include/system/tradedata.h
-        src/include/bitgrinder.h
-        src/math/analysis.cpp
+        src/include/system/tradedata.hpp
+        src/include/bitgrinder.hpp
         src/system/config.cpp
         src/system/conparse.cpp
         src/system/data.cpp
         src/system/systatus.c
         src/system/tradedata.cpp
-        src/bitgrinder.cpp
-        makefile
-        readme.md)
+        src/bitgrinder.cpp)
 
 add_executable(monitor
-        src/exchange/apiscrape.cpp
-        src/exchange/exchange.cpp
-        src/exchange/gateio.cpp
-        src/exchange/position.cpp
-        src/include/exchange/apiscrape.h
-        src/include/exchange/exchange.h
-        src/include/exchange/gateio.h
-        src/include/exchange/position.h
-        src/include/math/analysis.h
-        src/include/system/config.h
-        src/include/system/conparse.h
-        src/include/system/data.h
-        src/include/system/json.hpp
-        src/include/system/systatus.h
-        src/include/system/tinyfsm.hpp
-        src/include/system/tradedata.h
-        src/include/btgmonitor.h
-        src/include/console.h
-        src/math/analysis.cpp
-        src/system/config.cpp
-        src/system/conparse.cpp
-        src/system/data.cpp
-        src/system/systatus.c
-        src/system/tradedata.cpp
-        src/btgmonitor.cpp
-        makefile
-        readme.md)
+        src/include/btgmonitor.hpp
+        src/btgmonitor.cpp)
 
 add_executable(console
-        src/exchange/apiscrape.cpp
-        src/exchange/exchange.cpp
-        src/exchange/gateio.cpp
-        src/exchange/position.cpp
-        src/include/exchange/apiscrape.h
-        src/include/exchange/exchange.h
-        src/include/exchange/gateio.h
-        src/include/exchange/position.h
-        src/include/math/analysis.h
-        src/include/system/config.h
-        src/include/system/conparse.h
-        src/include/system/data.h
+        src/include/system/config.hpp
         src/include/system/json.hpp
         src/include/system/systatus.h
-        src/include/system/tinyfsm.hpp
-        src/include/system/tradedata.h
-        src/include/console.h
-        src/math/analysis.cpp
+        src/include/console.hpp
         src/system/config.cpp
-        src/system/conparse.cpp
-        src/system/data.cpp
         src/system/systatus.c
-        src/system/tradedata.cpp
-        src/console.cpp
-        makefile
-        readme.md)
+        src/console.cpp)
 
-add_custom_target(bitgrinder_make COMMAND make -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+add_custom_target(make_bitgrinder COMMAND make -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
 
-add_custom_target(console_make COMMAND make console -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+add_custom_target(make_console COMMAND make console -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
 
-add_custom_target(monitor_make COMMAND make monitor -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+add_custom_target(make_monitor COMMAND make monitor -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+
 target_Link_Libraries(bitgrinder "-lcrypto -lcurl -lstdc++ -lpthread -lboost_program_options -lboost_filesystem -lboost_system -stdlib=libc++")

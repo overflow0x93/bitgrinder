@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "../include/exchange/gateio.h"
+#include "../include/exchange/gateio.hpp"
 
 std::string buffer;
 

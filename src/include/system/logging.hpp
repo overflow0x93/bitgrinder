@@ -1,4 +1,4 @@
-#include "./config.h"
+#include "config.hpp"
 #include <stdio>
 
 #ifndef BITGRINDER_LOGGING_HPP

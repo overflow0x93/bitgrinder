@@ -1,7 +1,7 @@
 //
 // Created by overflow on 2/11/18.
 //
-#include "./include/console.h"
+#include "./include/console.hpp"
 
 std::string bitgver = "0.0.1.26";
 std::string binpath;

@@ -1,6 +1,6 @@
 #include "../system/json.hpp"
-#include "../system/tradedata.h"
-#include "./position.h"
+#include "../system/tradedata.hpp"
+#include "./position.hpp"
 
 #include <chrono>
 #include <curl/curl.h>

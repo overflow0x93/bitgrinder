@@ -1,7 +1,7 @@
 //
 // Created by overflow on 2/12/18.
 //
-#include "../include/system/config.h"
+#include "../include/system/config.hpp"
 
 std::string cfgLoc;
 nlohmann::json cfgFile;

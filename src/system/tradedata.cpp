@@ -3,7 +3,7 @@
 //
 #include <utility>
 
-#include "../include/system/tradedata.h"
+#include "../include/system/tradedata.hpp"
 
 Ticker::Ticker(std::string pair, std::string exchange) : cPair{std::move(pair)}, eName{std::move(exchange)} {
     struct windowVitals vitals;

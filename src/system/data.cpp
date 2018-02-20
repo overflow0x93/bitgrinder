@@ -1,4 +1,4 @@
-#include "../include/system/data.h"
+#include "../include/system/data.hpp"
 
 std::vector<nlohmann::json> jsonToVector(nlohmann::json jsonInput) {
     std::vector<nlohmann::json> vToReturn;

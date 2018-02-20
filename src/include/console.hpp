@@ -1,10 +1,10 @@
 //
 // Created by overflow on 2/11/18.
 //
-#include "./system/systatus.h"
-#include "./system/json.hpp"
+#include "system/systatus.h"
+#include "system/json.hpp"
 //#include "./system/data.h"
-#include "./system/config.h"
+#include "system/config.hpp"
 #include <csignal>
 
 #include <boost/program_options.hpp>

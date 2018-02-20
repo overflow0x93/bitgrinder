@@ -1,7 +1,7 @@
 //
 // Created by overflow on 2/12/18.
 //
-#include "../include/exchange/apiscrape.h"
+#include "../include/exchange/apiscrape.hpp"
 
 /*
 int sortPeriods(std::string currency = "ven_eth", int iTimeInc = 30) {

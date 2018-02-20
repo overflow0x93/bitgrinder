@@ -2,7 +2,7 @@
 // Created by overflow on 2/12/18.
 //
 
-#include "../include/exchange/position.h"
+#include "../include/exchange/position.hpp"
 
 positionManager::positionManager() {
     // Basic Gate.io functions init

@@ -1,8 +1,8 @@
 //
 // Created by overflow on 2/12/18.
 //
-#include "./json.hpp"
-#include "./data.h"
+#include "json.hpp"
+#include "data.hpp"
 
 #include <cstring>
 #include <cstdio>
