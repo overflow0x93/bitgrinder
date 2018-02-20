@@ -50,7 +50,11 @@ void Ticker::endThread() {
 void Ticker::updateThread(Ticker *tickClass) {
     // Check if current time > previous period + 5m
 // Move current period into period list
-    printf("[T] Thread Started\n");
+    #ifdef DEBUG
+    std::string outMsg = "[T] Thread created.";
+    Debug::dBasicLog(INIT,INFO,outMsg);
+    #endif
+    //printf("[T] Thread Started\n");
     while (updActive) {
         std::this_thread::sleep_for(std::chrono::seconds(2));
     }

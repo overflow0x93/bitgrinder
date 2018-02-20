@@ -44,7 +44,7 @@ console.o: systatus.o sysdata.o ./src/console.cpp ./src/include/console.hpp ./sr
 sysdata.o: ./src/system/data.cpp ./src/include/system/data.hpp ./src/include/system/json.hpp
 	$(CXX) $(CXXFLAGS) -o ./bin/system/sysdata.o ./src/system/data.cpp $(LIBS)
 
-tradedata.o: ./src/system/tradedata.cpp ./src/include/system/tradedata.hpp
+tradedata.o: logging.o ./src/system/tradedata.cpp ./src/include/system/tradedata.hpp ./src/include/system/logging.hpp
 	$(CXX) $(CXXFLAGS) -o ./bin/system/tradedata.o ./src/system/tradedata.cpp $(LIBS)
 
 systatus.o: ./src/system/systatus.cpp ./src/include/system/systatus.hpp

@@ -1,6 +1,7 @@
 //
 // Created by overflow on 2/11/18.
 //
+#include "logging.hpp"
 #include <cstdio>
 #include <thread>
 #include <chrono>

@@ -102,6 +102,7 @@ Debug::dBasicLog(INIT,INFO,outMsg);
         nlohmann::json jsonOutput;
         jsonOutput = gate.sendRequest(txURL.c_str(), gate.getAllTradeHistory.params);
         if (jsonOutput.empty())std::cout << "Empty JSON.\r\n";
+	else if (jsonOutput["data"].empty())std::cout << "JSON ERROR.\r\n";
         //std::cout << jsonOutput.dump() << "\r\n";
         int count;
         //while (jsonOutput["data"].size() > 0 && jsonOutput["data"] != NULL) {
@@ -167,9 +168,12 @@ Debug::dBasicLog(INIT,INFO,outMsg);
 
                 ++count;
             }  // end push records to binary
+		std::cout << "[Debug] Next " << ticks.vitals.currencyPair << " batch...\r\n";
             cTXID += 1;
             jsonOutput = {};
         }
+        std::cout << "[Debug] Next currency pair...\r\n";
+
         // init complete
 #ifdef DEBUG
 outMsg = ticks.vitals.currencyPair;
