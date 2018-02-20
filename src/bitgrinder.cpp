@@ -17,7 +17,7 @@ void signalHandler(int signum) {
     std::string outMsg = "---> CAUGHT TERM SIGNAL\r\n__________________________TERMINATING BITGRINDER__________________________\r\n"; 
     Debug::dBasicLog(INIT,INFO,outMsg);
     #endif
-
+    updater = false;
     // Ticker termination failing - object deleted already
     std::cout << "\r\n";
 
@@ -117,7 +117,7 @@ Debug::dBasicLog(INIT,INFO,outMsg);
         cTS = std::stoi(sTS);
         lastTS = cTS;
 	int txp = 0;
-        while ((ms / 1000) >= cTS + (5 * 60) && txp <= 10) { // As long as entry is at least 5 minutes ago
+        while ((ms / 1000) >= cTS + (5 * 60) && txp <= 2) { // As long as entry is at least 5 minutes ago
 //		system("clear");
 //		std::cout << "Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
             count = 0;
@@ -161,30 +161,26 @@ Debug::dBasicLog(INIT,INFO,outMsg);
                 //if(cTOT >= minValue)
                 ticks.PushCurrent(cTS, cTX, jsonOutput["data"][count]["type"], cRATE, cAMT, cTOT);
 #ifdef DEBUG
-                std::cout << "[Debug] Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
+                //std::cout << "[Debug] Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
 #endif
-
-                //std::cout << ticks.partPeriod.individualTX[count].rate << " ";
-
                 ++count;
             }  // end push records to binary
 	    ++txp;
+#ifdef DEBUG
 	    std::cout << "[Debug] Next " << ticks.vitals.currencyPair << " batch...\r\n";
+#endif
             cTXID += 1;
         }
-        std::cout << "[Debug] Next currency pair...\r\n";
-
-        // init complete
 #ifdef DEBUG
+        std::cout << "[Debug] Next currency pair...\r\n";
 outMsg = ticks.vitals.currencyPair;
 outMsg.append(" initialization completed with ");	
 outMsg.append(std::to_string(ticks.partPeriod.individualTX.size()));
 outMsg.append(" records added to ticker.");
 Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
-
+// Init complete
     }
-    std::cout << "\r\n";
 #ifdef DEBUG
 outMsg = "-----TICKER INIT COMPLETE-----";	
 //outMsg.append(std::to_string(ticks.partPeriod.individualTX.size()));
@@ -192,30 +188,37 @@ outMsg = "-----TICKER INIT COMPLETE-----";
 Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
 
-/*
-    if(gVenEth.PushCurrent(1234567890123, 124038532, "buy", 0.000323, 230.3, 0.8)==0)
-    {
-        std::cout << gVenEth.partPeriod.individualTX[0].txID << " " << gVenEth.partPeriod.individualTX[0].txTimestamp << " " << gVenEth.partPeriod.individualTX[0].buySell << "\r\n";
-    }
-    gVenEth.initThread();
-*/
-
-    //update();
+    update();
 
 
     return 0;
 }
 
 void update() {
+    #ifdef DEBUG
+    std::string outMsg = "Update thread started."; 
+    Debug::dBasicLog(INIT,INFO,outMsg);
+    #endif
     updater = true;
     while (updater) {
+    #ifdef DEBUG
+    outMsg = "Update pass"; 
+    Debug::dBasicLog(INIT,INFO,outMsg);
+    std::cout << "[Debug] Running update process...\r\n";
+    #endif
         // add update for book, refresh faster than periods
         //for (;;) {
         //std::this_thread::sleep_for(std::chrono::milliseconds(5)); //300000
-        std::this_thread::sleep_for(std::chrono::milliseconds(300)); //300000
-        std::cout << "5 minutes.";
+        std::this_thread::sleep_for(std::chrono::milliseconds(150)); //300000
+        std::cout << "2.5 minutes";
 
     }
+    #ifdef DEBUG
+    outMsg = "Stopping update thread."; 
+    Debug::dBasicLog(INIT,INFO,outMsg);
+    std::cout << "[Debug] Stopping update process...\r\n";
+    #endif
+
 }
 
 int main(int argc, char *argv[]) {
