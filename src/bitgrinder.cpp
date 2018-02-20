@@ -13,6 +13,10 @@ void signalHandler(int signum) {
     std::cout << "\r\n\r\nInterrupt signal (" << signum << ") received.\n";
     std::cout << "Shutting down...\r\n";
     // cleanup and close up stuff here
+    #ifdef DEBUG
+    std::string outMsg = "---> CAUGHT TERM SIGNAL\r\n__________________________TERMINATING BITGRINDER__________________________\r\n"; 
+    Debug::dBasicLog(INIT,INFO,outMsg);
+    #endif
 
     // Ticker termination failing - object deleted already
     std::cout << "\r\n";
@@ -25,12 +29,13 @@ void signalHandler(int signum) {
 
 int init(std::string path) {
     configFile = readConfig(path);
+std::string outMsg;
+    Debug::dBasicLog(INIT,INFO,"INIT START\r\n__________________________BITGRINDER INITIALIZATION__________________________");
 //    GateIO gate("B5738462-1EB0-449E-AEEC-3F6C1D7DA0DA",
 //                "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
     GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
                 configFile["Exchange"]["gateio"]["Account"]["KEY"].dump());
     //gateIOp = &gate;
-    Debug::dBasicLog(INIT,INFO,"Test log");
     std::cout << "API: " << configFile["Exchange"]["gateio"]["Account"]["API"].dump() << "\r\n";
     std::cout << "Positions in config: " << configFile["Exchange"]["gateio"]["Position"].size() << " : ";
     std::cout << "Starting tx ID: " << configFile["Exchange"]["gateio"]["Config"]["iTXID"].dump() << "\r\n";
@@ -47,7 +52,11 @@ int init(std::string path) {
         std::string pairNameToAdd = cpos["Pair"].dump();
         std::replace(pairNameToAdd.begin(), pairNameToAdd.end(), '"', ' ');
         pairNameToAdd.erase(std::remove(pairNameToAdd.begin(), pairNameToAdd.end(), ' '), pairNameToAdd.end());
-
+#ifdef DEBUG
+outMsg = "Located and pushing ";
+outMsg.append(pairNameToAdd);outMsg.append(" position.");	
+Debug::dBasicLog(INIT,INFO,outMsg);
+#endif
         gate.gatePositions.PushPosition(pairNameToAdd, 0.00004266, 0.98, 0.002, 0.0, 1.0, false, false);
     }
     std::cout << "\r\n";
@@ -60,6 +69,12 @@ int init(std::string path) {
         Ticker newTicker = Ticker(pos.pair, "gateio");
         // Add other details here
         newTicker.vitals.currencyPair = pos.pair;
+#ifdef DEBUG
+outMsg = "Created and pushing ";
+outMsg.append(pos.pair);outMsg.append(" ticker.");	
+Debug::dBasicLog(INIT,INFO,outMsg);
+#endif
+
         gate.gTickers.push_back(newTicker);
     }
     std::cout << "\r\n";
@@ -70,7 +85,13 @@ int init(std::string path) {
     int lastTS;
     std::cout << "Tickers: " << gate.gTickers.size() << " : ";
     for (auto ticks: gate.gTickers) {
-        bool stuck = false;
+#ifdef DEBUG
+outMsg = ticks.vitals.currencyPair;
+outMsg.append(" initialization started.");	
+Debug::dBasicLog(INIT,INFO,outMsg);
+#endif
+
+	bool stuck = false;
         //Find out length of tickers; fill with initial data.
         tradeURL = gate.getAllTradeHistory.URL;
         tradeURL.append(ticks.vitals.currencyPair);
@@ -151,10 +172,21 @@ int init(std::string path) {
         }
         // init complete
 #ifdef DEBUG
-        std::cout << ticks.vitals.currencyPair << " " << ticks.partPeriod.individualTX.size() << " ";
+outMsg = ticks.vitals.currencyPair;
+outMsg.append(" initialization completed with ");	
+outMsg.append(std::to_string(ticks.partPeriod.individualTX.size()));
+outMsg.append(" records added to ticker.");
+Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
+
     }
     std::cout << "\r\n";
+#ifdef DEBUG
+outMsg = "-----TICKER INIT COMPLETE-----";	
+//outMsg.append(std::to_string(ticks.partPeriod.individualTX.size()));
+//outMsg.append(" records added to ticker.");
+Debug::dBasicLog(INIT,INFO,outMsg);
+#endif
 
 /*
     if(gVenEth.PushCurrent(1234567890123, 124038532, "buy", 0.000323, 230.3, 0.8)==0)
@@ -165,6 +197,8 @@ int init(std::string path) {
 */
 
     //update();
+
+
     return 0;
 }
 
@@ -185,6 +219,8 @@ int main(int argc, char *argv[]) {
     int pos = aux.rfind('/');
     std::string path = aux.substr(0, pos + 1);
     std::string name = aux.substr(pos + 1);
+    signal(SIGINT, signalHandler);
+
 #ifdef DEBUG
 	std::cout << "[Debug] path = " << path << "\r\n";
 #endif
@@ -196,7 +232,6 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    signal(SIGINT, signalHandler);
     //while (1) { sleep(1); }
     //std::thread tUpdate(update);
     // Makes the main thread wait for the new thread to finish execution, therefore blocks its own execution.

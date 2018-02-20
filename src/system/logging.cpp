@@ -27,52 +27,63 @@ Debug::~Debug() {
 
 void Debug::dBasicLog(logType lType, logSeverity lSev, std::string msg)
 {
+#ifdef DEBUG
     std::string logLoc,logMsg, cTime, cDate;
     std::ofstream logFile;
 
-namespace pt = boost::posix_time;
-pt::ptime now = pt::second_clock::local_time();
-std::stringstream ss;
-ss << static_cast<int>(now.date().day() <<  now.date().month()) << now.date().year();
-cDate = ss.str().c_str();
-#ifdef DEBUG
 std::cout << "[Debug] IN: dBasicLog\r\n";
 std::cout << "[Debug] configFile = readConfig('./bin/');\r\n";
-#endif
+
     nlohmann::json configFile = readConfig("./bin/");
     configFile["Application"]["Config"]["Logs"].dump();
+
+//// Get time and date
+boost::gregorian::date tdate(boost::gregorian::day_clock::local_day());
+  boost::posix_time::ptime midnight(tdate);
+  boost::posix_time::ptime 
+     now(boost::posix_time::microsec_clock::local_time());
+  boost::posix_time::time_duration td = now - midnight;
+std::stringstream dstream, tstream;
+
+  //std::cout << tdate << std::endl;
+
+dstream << tdate.year() << "." << tdate.month().as_number() << "." << tdate.day();
+tstream << td.hours() << ":" << td.minutes() << ":" << td.seconds() << "." << td.fractional_seconds();
+cDate = dstream.str();
+cTime = tstream.str();
+
+    logLoc = "/opt/bitgrinder/system/logs/";logLoc.append(cDate);logLoc.append("-debug.");
     switch (lType) {
         case INIT:
-            logLoc = "/opt/bitgrinder/system/logs/debug.init-";
+            logLoc.append("init");
             break;
         case SYSTEM:
-            logLoc = "/opt/bitgrinder/system/logs/debug.system-";
+            logLoc.append("system");
             break;
         case TRADE:
-            logLoc = "/opt/bitgrinder/system/logs/debug.trade-";
+            logLoc.append("trade");
             break;
         default:
             break;
     }
-	logLoc.append(cDate);
     switch (lSev) {
         case INFO:
-            logMsg = "[      INFO      ]   ";
+            logMsg = "[--INFO--]  ";
             logMsg.append(cTime);logMsg.append("  |  ");logMsg.append(msg);logMsg.append("\r\n");
             break;
         case WARNING:
-            logMsg = "[   ---WARN----  ]   ";
+            logMsg = "[--WARN--]  ";
             logMsg.append(cTime);logMsg.append("  |  ");logMsg.append(msg);logMsg.append("\r\n");
             break;
         case ERROR:
-            logMsg = "[-----ERROR!-----]   ";
+            logMsg = "[!!ERROR!!]  ";
             logMsg.append(cTime);logMsg.append("  |  ");logMsg.append(msg);logMsg.append("\r\n");
             break;
         case CRITICAL:
-            logMsg = "[  !!CRITICAL!!  ]   ";
+            logMsg = "[!!CRITICAL!!]  ";
             logMsg.append(cTime);logMsg.append("  |  ");logMsg.append(msg);logMsg.append("\r\n");
         default:
-            logMsg = "[---ERRORS (2)---]   ";
+            logMsg = "[!!ERRORS 2!!]  ";
             logMsg.append(cTime);logMsg.append("  |  ");logMsg.append(msg);logMsg.append("\r\n");
             logMsg.append("Debug log severity not passed for above message.");logMsg.append("\r\n");
             break;
@@ -81,5 +92,7 @@ std::cout << "[Debug] configFile = readConfig('./bin/');\r\n";
     logFile.open (logLoc, std::ios::out | std::ios::ate | std::ios::app);
     logFile.write(logMsg.c_str(),logMsg.size());
     logFile.close();
+#endif
+
 }
 
