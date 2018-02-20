@@ -25,23 +25,6 @@ nlohmann::json appendJsonData(nlohmann::json jsonToAppend, nlohmann::json jsonTo
     return jsonToAppend;
 }
 
-std::vector<nlohmann::json> vecSortByKey(nlohmann::json jsonInput, std::string keyname, enum varType varTypeToSort) {
-    // Agnostic sorting of json
-    std::vector<nlohmann::json> vToReturn;
-
-    switch (varTypeToSort) {
-        case vFLOAT:
-            break;
-        case vINT:
-            break;
-        case vSTRING:
-            break;
-        default:
-            return vToReturn;
-    }
-    return vToReturn;
-}
-
 nlohmann::json readJsonBinary(std::string targetFile) {
     std::ifstream input_file(targetFile, std::ios::binary);
     std::vector<uint8_t> input_vector(

@@ -43,12 +43,12 @@ int setupConfig(std::string cfgLoc) {
     //std::string conFile = "./bin/data/config";
     std::string input;
     {
-        workingJson["Application"]["Config"]["TradeData"] = "./data/exchange/";
-        std::cout << "Enter log location [./data/logs/] : ";
+        workingJson["Application"]["Config"]["TradeData"] = "data/exchange/";
+        std::cout << "Enter log location [data/logs/] : ";
         std::string input;
         std::getline(std::cin, input);
         if (input.empty()) {
-            workingJson["Application"]["Config"]["Logs"] = "./data/logs/";
+            workingJson["Application"]["Config"]["Logs"] = "data/logs/";
         } else {
             workingJson["Application"]["Config"]["Logs"] = input;
         }

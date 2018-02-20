@@ -36,6 +36,7 @@ int init(std::string path) {
     GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
                 configFile["Exchange"]["gateio"]["Account"]["KEY"].dump());
     //gateIOp = &gate;
+    //Debug::dBasicLog(INIT,INFO,"Test log");
     std::cout << "API: " << configFile["Exchange"]["gateio"]["Account"]["API"].dump() << "\r\n";
     std::cout << "Positions in config: " << configFile["Exchange"]["gateio"]["Position"].size() << " : ";
     std::cout << "Starting tx ID: " << configFile["Exchange"]["gateio"]["Config"]["iTXID"].dump() << "\r\n";
@@ -143,8 +144,9 @@ int init(std::string path) {
                 // Must be numbers, but are read as strings
                 //if(cTOT >= minValue)
                 ticks.PushCurrent(cTS, cTX, jsonOutput["data"][count]["type"], cRATE, cAMT, cTOT);
-//		system("clear");
-//		std::cout << "Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
+#ifdef DEBUG
+                std::cout << "Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
+#endif
 
                 //std::cout << ticks.partPeriod.individualTX[count].rate << " ";
 
@@ -154,7 +156,9 @@ int init(std::string path) {
             jsonOutput = {};
         }
         // init complete
+#ifdef DEBUG
         std::cout << ticks.vitals.currencyPair << " " << ticks.partPeriod.individualTX.size() << " ";
+#endif
     }
     std::cout << "\r\n";
 
@@ -197,7 +201,7 @@ int main(int argc, char *argv[]) {
     }
 
     signal(SIGINT, signalHandler);
-    while (1) { sleep(1); }
+    //while (1) { sleep(1); }
     //std::thread tUpdate(update);
     // Makes the main thread wait for the new thread to finish execution, therefore blocks its own execution.
     //tUpdate.join();

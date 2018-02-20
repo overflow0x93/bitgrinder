@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.9)
 project(bitgrinder)
 
 # Set the output folder where your program will be created
-set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/src)
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/src/bin)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/src/bin)
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -pthread")
@@ -46,14 +46,16 @@ add_executable(bitgrinder
         src/include/system/conparse.hpp
         src/include/system/data.hpp
         src/include/system/json.hpp
-        src/include/system/systatus.h
+        src/include/system/logging.hpp
+        src/include/system/systatus.hpp
         src/include/system/tinyfsm.hpp
         src/include/system/tradedata.hpp
         src/include/bitgrinder.hpp
         src/system/config.cpp
         src/system/conparse.cpp
         src/system/data.cpp
-        src/system/systatus.c
+        src/system/logging.cpp
+        src/system/systatus.cpp
         src/system/tradedata.cpp
         src/bitgrinder.cpp)
 
@@ -63,17 +65,20 @@ add_executable(monitor
 
 add_executable(console
         src/include/system/config.hpp
+        src/include/system/data.hpp
         src/include/system/json.hpp
-        src/include/system/systatus.h
+        src/include/system/systatus.hpp
         src/include/console.hpp
         src/system/config.cpp
-        src/system/systatus.c
+        src/system/data.cpp
+        src/system/systatus.cpp
         src/console.cpp)
 
-add_custom_target(make_bitgrinder COMMAND make -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+#add_custom_target(_make_bitgrinder COMMAND make -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
 
-add_custom_target(make_console COMMAND make console -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+#add_custom_target(_make_console COMMAND make console -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
 
-add_custom_target(make_monitor COMMAND make monitor -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
+#add_custom_target(_make_monitor COMMAND make monitor -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
 
-target_Link_Libraries(bitgrinder "-lcrypto -lcurl -lstdc++ -lpthread -lboost_program_options -lboost_filesystem -lboost_system -stdlib=libc++")
+target_Link_Libraries(bitgrinder "-lcrypto -lcurl -lstdc++ -lpthread -lboost_program_options -lboost_filesystem -lboost_system")
+target_Link_Libraries(console "-lcrypto -lcurl -lstdc++ -lpthread -lboost_program_options -lboost_filesystem -lboost_system")

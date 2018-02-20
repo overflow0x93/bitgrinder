@@ -3,7 +3,7 @@ CXX = $(CC) -std=c++11
 # Standard build
 #CXXFLAGS=-c
 # Debug Build
-CXXFLAGS=-c -ggdb
+CXXFLAGS=-c -ggdb -DDEBUG
 #LIBS = -lcurl -lstdc++ -lcrypto -l pthread
 LIBS = -lcurl -lstdc++ -lcrypto -pthread
 all: clean bitgrinder monitor console
@@ -35,7 +35,7 @@ monitor.o: ./src/btgmonitor.cpp ./src/include/btgmonitor.hpp
 console: console.o config.o sysdata.o
 	$(CXX) -o ./bin/console ./bin/console.o ./bin/system/systatus.o ./bin/system/config.o ./bin/system/sysdata.o -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
-console.o: systatus.o sysdata.o ./src/console.cpp ./src/include/console.hpp ./src/include/system/systatus.h ./src/include/system/json.hpp ./src/include/system/data.hpp ./src/include/system/config.hpp
+console.o: systatus.o sysdata.o ./src/console.cpp ./src/include/console.hpp ./src/include/system/systatus.hpp ./src/include/system/json.hpp ./src/include/system/data.hpp ./src/include/system/config.hpp
 	$(CXX) $(CXXFLAGS) -o ./bin/console.o ./src/console.cpp -L/usr/lib64 -lboost_program_options -lboost_filesystem -lboost_system $(LIBS)
 
 sysdata.o: ./src/system/data.cpp ./src/include/system/data.hpp ./src/include/system/json.hpp
@@ -44,8 +44,8 @@ sysdata.o: ./src/system/data.cpp ./src/include/system/data.hpp ./src/include/sys
 tradedata.o: ./src/system/tradedata.cpp ./src/include/system/tradedata.hpp
 	$(CXX) $(CXXFLAGS) -o ./bin/system/tradedata.o ./src/system/tradedata.cpp $(LIBS)
 
-systatus.o: ./src/system/systatus.c ./src/include/system/systatus.h
-	$(CC) $(CXXFLAGS) -o ./bin/system/systatus.o ./src/system/systatus.c
+systatus.o: ./src/system/systatus.cpp ./src/include/system/systatus.hpp
+	$(CC) $(CXXFLAGS) -o ./bin/system/systatus.o ./src/system/systatus.cpp
 
 clean:
 	rm -f ./bin/bitgrinder ./bin/monitor ./bin/console ./bin/*.o ./bin/web/*.o ./bin/system/*.o ./bin/exchange/*.o

@@ -1,4 +1,5 @@
 #include "exchange/gateio.hpp"
+#include "system/logging.hpp"
 //#include "./system/tradedata.h"
 #include "./system/json.hpp"
 #include "system/config.hpp"

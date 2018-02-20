@@ -2,7 +2,7 @@
 // Created by overflow on 2/12/18.
 //
 
-#include "../include/system/systatus.h"
+#include "../include/system/systatus.hpp"
 
 struct stat info;
 
