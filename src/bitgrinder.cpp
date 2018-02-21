@@ -14,7 +14,7 @@ void signalHandler(int signum) {
     std::cout << "Shutting down...\r\n";
     // cleanup and close up stuff here
 #ifdef DEBUG
-    std::string outMsg = "↯↯↯↯ TERM SIGNAL_______________________________\r\n___________________________TERMINATING BITGRINDER____________________________\r\n\r\n\r\n";
+    std::string outMsg = "↯↯↯↯ TERM SIGNAL_______________________________\r\n___________________________TERMINATING BITGRINDER________________________\r\n\r\n\r\n";
     Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
     updater = false;
@@ -31,7 +31,7 @@ int init(std::string path) {
     configFile = readConfig(path);
     std::string outMsg;
     Debug::dBasicLog(INIT, INFO,
-                     "\r\n__________________________BITGRINDER INITIALIZATION__________________________");
+                     "\r\n_________________________BITGRINDER INITIALIZATION__________________________");
 //    GateIO gate("B5738462-1EB0-449E-AEEC-3F6C1D7DA0DA",
 //                "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
     GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
@@ -96,7 +96,7 @@ int init(std::string path) {
 
     //for (auto ticks: gate.gTickers) {
 	Ticker ticks = gate.gTickers[tcount]; 
-
+	ticks.initThread();
 	/*
 	try { // 
 	  if(ticks == NULL)throw 1;

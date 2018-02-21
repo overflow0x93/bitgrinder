@@ -10,7 +10,7 @@ Ticker::Ticker(std::string pair, std::string exchange) : cPair{std::move(pair)},
     struct tradeData tx;
     struct tradePeriod fullPeriod;
     struct currentPeriod partPeriod;
-    initThread();
+    //initThread();
     //std::vector<tradePeriod> dWindow;
     //std::vector<tradeData> partPeriod.individualTX;
 }
@@ -81,17 +81,21 @@ void Ticker::updateThread(Ticker *tickClass) {
 #endif
     //printf("[T] Thread Started\n");
     while (updActive) {
+        std::this_thread::sleep_for(std::chrono::seconds(30));
+
         //assert(tickClass->partPeriod.individualTX.size() > cTXsize);
         // Above fails
-        //std::stringstream sizest;
-        //sizest << cTXsize;
-        // Check if current time > previous period + 5m
+        std::stringstream sizest;
+        sizest << tickClass->partPeriod.individualTX.size();
+
+	// Check if current time > previous period + 5m
         // Move current period into period list
-        std::this_thread::sleep_for(std::chrono::seconds(30));
 #ifdef DEBUG
-        //outMsg = "[T][";outMsg.append(cTXpair);outMsg.append("] Update process:\r\n                             ");
-        //outMsg.append(sizest.str());outMsg.append(" TX records waiting to process.");
-        //Debug::dBasicLog(INIT,INFO,outMsg);
+	//std::cout << "[Debug][T][" << tickClass-partPeriod.individualTX.size() << "] Thread update: " << sizest.str() << " TX to process.\r\n";
+	std::cout << "[Debug][T][" << cTXpair << "] Thread update: " << sizest.str() << " TX to process.\r\n";
+        outMsg = "[T][";outMsg.append(cTXpair);outMsg.append("] Update process:\r\n                             ");
+        outMsg.append(sizest.str());outMsg.append(" TX records waiting to process.");
+        Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
         //while (count < cTXsize) {
             //std::cout << partPeriod.individualTX[count].rate;
