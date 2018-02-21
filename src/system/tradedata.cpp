@@ -36,6 +36,28 @@ int Ticker::PushCurrent(int time, int txid, std::string type, float rate, float 
 
     return 0;
 }
+int Ticker::PopCurrent() {
+    return 0;
+}
+
+/*
+int Ticker::PushHistorical(int index, int initTimestamp, int initTXID, float openRate, 
+	int finalTimestamp, int finalTXID, float closeRate, float periodMin, float periodMax,
+        bool is10, bool is15, bool is20, bool is30, bool is60) {
+    tradeData ctx;
+    ctx.txID = txid;
+    ctx.txTimestamp = time;
+    ctx.buySell = type;
+    ctx.rate = rate;
+    ctx.amount = amount;
+    ctx.total = total;
+//std::cout << gVenEth.tx.txID << " " << gVenEth.tx.txTim$
+    fullPeriod.individualTX.push_back(ctx);
+
+    return 0;
+
+}
+*/ 
 
 void Ticker::initThread() {
     updActive = true;
@@ -51,6 +73,7 @@ void Ticker::updateThread(Ticker *tickClass) {
     int count,cTXsize;
     std::cout << tickClass->vitals.currencyPair;
     std::string cTXpair = tickClass->vitals.currencyPair;
+    transform(cTXpair.begin(), cTXpair.end(), cTXpair.begin(), toupper);
     std::cout << "[T-" << cTXpair << "] Thread started.\r\n";
 #ifdef DEBUG
     std::string outMsg = "[T][";outMsg.append(cTXpair);outMsg.append("] Thread created.");
@@ -81,3 +104,7 @@ void Ticker::updateThread(Ticker *tickClass) {
 #endif
 }
 
+/*
+Multiplier: (2 / (Time periods + 1) ) = (2 / (10 + 1) ) = 0.1818 (18.18%)
+EMA: {Close - EMA(previous day)} x multiplier + EMA(previous day)
+*/

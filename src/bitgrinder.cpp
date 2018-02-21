@@ -14,7 +14,7 @@ void signalHandler(int signum) {
     std::cout << "Shutting down...\r\n";
     // cleanup and close up stuff here
 #ifdef DEBUG
-    std::string outMsg = "↯↯↯↯ TERM SIGNAL_______________________________\r\n___________________________TERMINATING BITGRINDER____________________________\r\n";
+    std::string outMsg = "↯↯↯↯ TERM SIGNAL_______________________________\r\n___________________________TERMINATING BITGRINDER____________________________\r\n\r\n\r\n";
     Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
     updater = false;
@@ -31,7 +31,7 @@ int init(std::string path) {
     configFile = readConfig(path);
     std::string outMsg;
     Debug::dBasicLog(INIT, INFO,
-                     "INIT START\r\n__________________________BITGRINDER INITIALIZATION__________________________");
+                     "\r\n__________________________BITGRINDER INITIALIZATION__________________________");
 //    GateIO gate("B5738462-1EB0-449E-AEEC-3F6C1D7DA0DA",
 //                "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
     GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
@@ -80,19 +80,47 @@ int init(std::string path) {
     }
     std::cout << "\r\n";
 
-    std::string sTS, sTX, sRATE, sAMT, sTOT, tradeURL;
-    int cTS, cTX;
-    float cRATE, cAMT, cTOT;
-    int lastTS;
     std::cout << "Tickers: " << gate.gTickers.size() << " : ";
-    for (auto ticks: gate.gTickers) {
 #ifdef DEBUG
-        outMsg = ticks.vitals.currencyPair;
-        outMsg.append(" initialization started.");
+        outMsg = "Starting parallel tick init ";
         Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
 
-        bool stuck = false;
+/////////////////////////////////////////////////
+    #pragma omp parallel for    
+    for (int tcount = 0; tcount <gate.gTickers.size(); tcount++) {
+    std::string sTS, sTX, sRATE, sAMT, sTOT, tradeURL, poutMsg;
+    int cTS, cTX;
+    float cRATE, cAMT, cTOT;
+    int lastTS;
+
+    //for (auto ticks: gate.gTickers) {
+	Ticker ticks = gate.gTickers[tcount]; 
+
+	/*
+	try { // 
+	  if(ticks == NULL)throw 1;
+	}
+	catch (int e) {
+	  switch(e){
+	    case 1:
+		outMsg = "[CRITICAL] Ticker is NULL!";
+		break;
+	    default:
+		outMsg = "[CRITICAL] Error in Ticker assignment!";
+		break;
+	  }
+#ifdef DEBUG
+        Debug::dBasicLog(INIT,CRITICAL,outMsg);
+#endif
+
+	std::cout << outMsg << "\r\n";
+	}*/
+#ifdef DEBUG
+        poutMsg = ticks.vitals.currencyPair;
+        poutMsg.append(" initialization started.");
+        Debug::dBasicLog(INIT,INFO,outMsg);
+#endif
         //Find out length of tickers; fill with initial data.
         tradeURL = gate.getAllTradeHistory.URL;
         tradeURL.append(ticks.vitals.currencyPair);
@@ -163,6 +191,8 @@ int init(std::string path) {
 #endif
             cTXID += 1;
         }
+// End parallel
+
 #ifdef DEBUG
         std::cout << "[Debug] Next currency pair...\r\n";
 outMsg = ticks.vitals.currencyPair;

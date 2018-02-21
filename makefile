@@ -5,7 +5,11 @@ CXX = $(CC) -std=c++11
 # Debug Build
 CXXFLAGS=-c -ggdb -DDEBUG
 #LIBS = -lcurl -lstdc++ -lcrypto -l pthread
-LIBS = -lcurl -lstdc++ -lcrypto -pthread
+LIBS = -fopenmp -lcurl -lstdc++ -lcrypto -pthread
+
+OMP_NUM_THREADS=4
+export OMP_NUM_THREADS
+
 all: clean bitgrinder monitor console
 
 bitgrinder: bitgrinder.o gateio.o tradedata.o config.o position.o sysdata.o logging.o
