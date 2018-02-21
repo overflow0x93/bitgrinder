@@ -80,5 +80,5 @@ add_executable(console
 
 #add_custom_target(_make_monitor COMMAND make monitor -C ${bitgrinder_SOURCE_DIR} CLION_EXE_DIR=${PROJECT_BINARY_DIR})
 
-target_Link_Libraries(bitgrinder "-lcrypto -lcurl -lstdc++ -lpthread -lboost_program_options -lboost_filesystem -lboost_system")
-target_Link_Libraries(console "-lcrypto -lcurl -lstdc++ -lpthread -lboost_program_options -lboost_filesystem -lboost_system")
+target_Link_Libraries(bitgrinder "-lcrypto -lcurl -lstdc++ -lpthread -lboost_program_options -lboost_filesystem -lboost_system -lboost_system")
+target_Link_Libraries(console "-lcrypto -lcurl -lstdc++ -lpthread -lboost_program_options -lboost_filesystem -lboost_system -lboost_system")

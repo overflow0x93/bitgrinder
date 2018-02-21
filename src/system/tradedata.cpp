@@ -48,16 +48,36 @@ void Ticker::endThread() {
 }
 
 void Ticker::updateThread(Ticker *tickClass) {
-    // Check if current time > previous period + 5m
-// Move current period into period list
-    #ifdef DEBUG
-    std::string outMsg = "[T] Thread created.";
+    int count,cTXsize;
+    std::cout << tickClass->vitals.currencyPair;
+    std::string cTXpair = tickClass->vitals.currencyPair;
+    std::cout << "[T-" << cTXpair << "] Thread started.\r\n";
+#ifdef DEBUG
+    std::string outMsg = "[T][";outMsg.append(cTXpair);outMsg.append("] Thread created.");
     Debug::dBasicLog(INIT,INFO,outMsg);
-    #endif
+#endif
     //printf("[T] Thread Started\n");
     while (updActive) {
-        std::this_thread::sleep_for(std::chrono::seconds(2));
+        //assert(tickClass->partPeriod.individualTX.size() > cTXsize);
+        // Above fails
+        //std::stringstream sizest;
+        //sizest << cTXsize;
+        // Check if current time > previous period + 5m
+        // Move current period into period list
+        std::this_thread::sleep_for(std::chrono::seconds(30));
+#ifdef DEBUG
+        //outMsg = "[T][";outMsg.append(cTXpair);outMsg.append("] Update process:\r\n                             ");
+        //outMsg.append(sizest.str());outMsg.append(" TX records waiting to process.");
+        //Debug::dBasicLog(INIT,INFO,outMsg);
+#endif
+        //while (count < cTXsize) {
+            //std::cout << partPeriod.individualTX[count].rate;
+            // likely null
+        //}
     }
-    printf("[T] Thread Ended\n");
+#ifdef DEBUG
+    outMsg = "[T][";outMsg.append(cTXpair);outMsg.append("] Thread killed.");
+    Debug::dBasicLog(INIT,INFO,outMsg);
+#endif
 }
 

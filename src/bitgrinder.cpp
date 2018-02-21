@@ -1,5 +1,5 @@
 #include "./include/bitgrinder.hpp"
-
+// ⇋⇌🢔🢕🢖🢗⮐⮑⮒⮓⮔⯐
 bool updater = false;
 std::string bitgver = "0.0.1.26";
 nlohmann::json configFile;
@@ -13,10 +13,10 @@ void signalHandler(int signum) {
     std::cout << "\r\n\r\nInterrupt signal (" << signum << ") received.\n";
     std::cout << "Shutting down...\r\n";
     // cleanup and close up stuff here
-    #ifdef DEBUG
-    std::string outMsg = "---> CAUGHT TERM SIGNAL\r\n__________________________TERMINATING BITGRINDER__________________________\r\n"; 
+#ifdef DEBUG
+    std::string outMsg = "↯↯↯↯ TERM SIGNAL_______________________________\r\n___________________________TERMINATING BITGRINDER____________________________\r\n";
     Debug::dBasicLog(INIT,INFO,outMsg);
-    #endif
+#endif
     updater = false;
     // Ticker termination failing - object deleted already
     std::cout << "\r\n";
@@ -29,8 +29,9 @@ void signalHandler(int signum) {
 
 int init(std::string path) {
     configFile = readConfig(path);
-std::string outMsg;
-    Debug::dBasicLog(INIT,INFO,"INIT START\r\n__________________________BITGRINDER INITIALIZATION__________________________");
+    std::string outMsg;
+    Debug::dBasicLog(INIT, INFO,
+                     "INIT START\r\n__________________________BITGRINDER INITIALIZATION__________________________");
 //    GateIO gate("B5738462-1EB0-449E-AEEC-3F6C1D7DA0DA",
 //                "3ed0749c03cdbf8e21b6e49d6eb1e65d388e258c2556fc2c4ae4f437028669dc");
     GateIO gate(configFile["Exchange"]["gateio"]["Account"]["API"].dump(),
@@ -53,9 +54,9 @@ std::string outMsg;
         std::replace(pairNameToAdd.begin(), pairNameToAdd.end(), '"', ' ');
         pairNameToAdd.erase(std::remove(pairNameToAdd.begin(), pairNameToAdd.end(), ' '), pairNameToAdd.end());
 #ifdef DEBUG
-outMsg = "Located and pushing ";
-outMsg.append(pairNameToAdd);outMsg.append(" position.");	
-Debug::dBasicLog(INIT,INFO,outMsg);
+        outMsg = "Located and pushing ";
+        outMsg.append(pairNameToAdd);outMsg.append(" position.");
+        Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
         gate.gatePositions.PushPosition(pairNameToAdd, 0.00004266, 0.98, 0.002, 0.0, 1.0, false, false);
     }
@@ -70,9 +71,9 @@ Debug::dBasicLog(INIT,INFO,outMsg);
         // Add other details here
         newTicker.vitals.currencyPair = pos.pair;
 #ifdef DEBUG
-outMsg = "Created and pushing ";
-outMsg.append(pos.pair);outMsg.append(" ticker.");	
-Debug::dBasicLog(INIT,INFO,outMsg);
+        outMsg = "Created and pushing ";
+        outMsg.append(pos.pair);outMsg.append(" ticker.");
+        Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
 
         gate.gTickers.push_back(newTicker);
@@ -86,12 +87,12 @@ Debug::dBasicLog(INIT,INFO,outMsg);
     std::cout << "Tickers: " << gate.gTickers.size() << " : ";
     for (auto ticks: gate.gTickers) {
 #ifdef DEBUG
-outMsg = ticks.vitals.currencyPair;
-outMsg.append(" initialization started.");	
-Debug::dBasicLog(INIT,INFO,outMsg);
+        outMsg = ticks.vitals.currencyPair;
+        outMsg.append(" initialization started.");
+        Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
 
-	bool stuck = false;
+        bool stuck = false;
         //Find out length of tickers; fill with initial data.
         tradeURL = gate.getAllTradeHistory.URL;
         tradeURL.append(ticks.vitals.currencyPair);
@@ -102,24 +103,17 @@ Debug::dBasicLog(INIT,INFO,outMsg);
         nlohmann::json jsonOutput;
         jsonOutput = gate.sendRequest(txURL.c_str(), gate.getAllTradeHistory.params);
         if (jsonOutput.empty())std::cout << "Empty JSON.\r\n";
-	else if (jsonOutput["data"].empty())std::cout << "JSON ERROR.\r\n";
-        //std::cout << jsonOutput.dump() << "\r\n";
+        else if (jsonOutput["data"].empty())std::cout << "JSON ERROR.\r\n";
         int count;
-        //while (jsonOutput["data"].size() > 0 && jsonOutput["data"] != NULL) {
-//__int64 now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
         auto now = std::chrono::high_resolution_clock::now();
         long int ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-        //std::chrono::milliseconds ms = std::chrono::duration_cast< std::chrono::milliseconds > (
-        //std::chrono::system_clock::now().time_since_epoch());
         sTS = jsonOutput["data"][0]["timestamp"].dump();
         std::replace(sTS.begin(), sTS.end(), '"', ' ');
         sTS.erase(std::remove(sTS.begin(), sTS.end(), ' '), sTS.end());
         cTS = std::stoi(sTS);
         lastTS = cTS;
-	int txp = 0;
+        int txp = 0;
         while ((ms / 1000) >= cTS + (5 * 60) && txp <= 2) { // As long as entry is at least 5 minutes ago
-//		system("clear");
-//		std::cout << "Target time : " << std::to_string(ms/1000) << "   Time Index : " << std::to_string(cTS) << " \r\n";
             count = 0;
             tradeURL = gate.getAllTradeHistory.URL;
             tradeURL.append(ticks.vitals.currencyPair);
@@ -131,13 +125,11 @@ Debug::dBasicLog(INIT,INFO,outMsg);
             if (jsonOutput.empty())std::cout << "Empty JSON.\r\n";
 
             while (count < jsonOutput["data"].size()) {
-		txp = 0;
+                txp = 0;
                 sTS = jsonOutput["data"][count]["timestamp"].dump();
                 std::replace(sTS.begin(), sTS.end(), '"', ' ');
                 sTS.erase(std::remove(sTS.begin(), sTS.end(), ' '), sTS.end());
                 cTS = std::stoi(sTS);
-                lastTS = cTS;
-                if (lastTS == cTS)stuck == true;;
                 lastTS = cTS;
                 sTX = jsonOutput["data"][count]["tradeID"].dump();
                 std::replace(sTX.begin(), sTX.end(), '"', ' ');
@@ -165,9 +157,9 @@ Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
                 ++count;
             }  // end push records to binary
-	    ++txp;
+            ++txp;
 #ifdef DEBUG
-	    std::cout << "[Debug] Next " << ticks.vitals.currencyPair << " batch...\r\n";
+            std::cout << "[Debug] Next " << ticks.vitals.currencyPair << " batch...\r\n";
 #endif
             cTXID += 1;
         }
@@ -182,10 +174,10 @@ Debug::dBasicLog(INIT,INFO,outMsg);
 // Init complete
     }
 #ifdef DEBUG
-outMsg = "-----TICKER INIT COMPLETE-----";	
-//outMsg.append(std::to_string(ticks.partPeriod.individualTX.size()));
-//outMsg.append(" records added to ticker.");
-Debug::dBasicLog(INIT,INFO,outMsg);
+    outMsg = "-----TICKER INIT COMPLETE-----";
+    //outMsg.append(std::to_string(ticks.partPeriod.individualTX.size()));
+    //outMsg.append(" records added to ticker.");
+    Debug::dBasicLog(INIT,INFO,outMsg);
 #endif
 
     update();
@@ -195,29 +187,29 @@ Debug::dBasicLog(INIT,INFO,outMsg);
 }
 
 void update() {
-    #ifdef DEBUG
-    std::string outMsg = "Update thread started."; 
+#ifdef DEBUG
+    std::string outMsg = "Update thread started.";
     Debug::dBasicLog(INIT,INFO,outMsg);
-    #endif
+#endif
     updater = true;
     while (updater) {
-    #ifdef DEBUG
-    outMsg = "Update pass"; 
-    Debug::dBasicLog(INIT,INFO,outMsg);
-    std::cout << "[Debug] Running update process...\r\n";
-    #endif
+#ifdef DEBUG
+        outMsg = "Update pass";
+        Debug::dBasicLog(INIT,INFO,outMsg);
+        std::cout << "[Debug] Running update process...\r\n";
+#endif
         // add update for book, refresh faster than periods
         //for (;;) {
         //std::this_thread::sleep_for(std::chrono::milliseconds(5)); //300000
-        std::this_thread::sleep_for(std::chrono::milliseconds(150)); //300000
-        std::cout << "2.5 minutes";
+        std::this_thread::sleep_for(std::chrono::seconds(30)); //300000
+        //std::cout << "2.5 minutes";
 
     }
-    #ifdef DEBUG
-    outMsg = "Stopping update thread."; 
+#ifdef DEBUG
+    outMsg = "Stopping update thread.";
     Debug::dBasicLog(INIT,INFO,outMsg);
     std::cout << "[Debug] Stopping update process...\r\n";
-    #endif
+#endif
 
 }
 
@@ -229,12 +221,13 @@ int main(int argc, char *argv[]) {
     signal(SIGINT, signalHandler);
 
 #ifdef DEBUG
-	std::cout << "[Debug] path = " << path << "\r\n";
+    std::cout << "[Debug] path = " << path << "\r\n";
 #endif
     if (init(path) == 0) {
         std::cout << "Initialized. \r\n";
 
-    } else {
+    }
+    else {
         std::cout << "Error initializing.";
         exit(EXIT_FAILURE);
     }

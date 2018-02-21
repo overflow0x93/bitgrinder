@@ -7,6 +7,7 @@
 #include <chrono>
 #include <vector>
 #include <string>
+#include <sstream>
 
 #ifndef BITGRINDER_TRADEDATA_H
 #define BITGRINDER_TRADEDATA_H
