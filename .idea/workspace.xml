@@ -372,7 +372,7 @@
       <workItem from="1518330937560" duration="44441000" />
       <workItem from="1518911795916" duration="5718000" />
       <workItem from="1518917585786" duration="9674000" />
-      <workItem from="1519086754148" duration="18612000" />
+      <workItem from="1519086754148" duration="18705000" />
     </task>
     <task id="LOCAL-00001" summary="CMake Update">
       <created>1518913247665</created>
@@ -406,7 +406,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="78511000" />
+    <option name="totallyTimeSpent" value="78604000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="634" y="59" width="1366" height="719" extended-state="6" />
